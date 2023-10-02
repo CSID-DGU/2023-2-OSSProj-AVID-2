@@ -4,3 +4,5 @@
 팀장 : 동국대학교 경영정보학과 이종범 https://github.com/JongbeomLee623
 
 팀원 : 동국대학교 산업시스템공학과 류채린 https://github.com/chaerinryu
+
+팀원 : 동국대학교 경영정보학과 김범수 https://github.com/BrianKim913
