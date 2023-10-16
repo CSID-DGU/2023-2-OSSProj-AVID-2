@@ -31,11 +31,13 @@ public class UserController {
     @PostMapping("/login")
     public Response<UserEntity> login(@RequestBody UserLoginRequestDTO requestDTO) {
         return Response.success(userService.login(requestDTO.getUserNum(), requestDTO.getUserPwd()));
+
     }
 
     @GetMapping("/home")
     public Response<UserHomeResponseDTO> home(Authentication authentication) {
         return Response.success(userService.getHome(authentication.name()));
     }
+
 
 }

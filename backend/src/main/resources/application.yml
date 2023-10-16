@@ -24,6 +24,7 @@ spring:
 
 # mybatis:
   # mapper 경로 지정
+
   # mapper-locations: resources/*.xml
   # configuration:
     # map-underscore-to-camel-case: true
