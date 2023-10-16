@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/access")
                 .failureUrl("/denied") // 인증에 실패했을 때 보여주는 화면 url, 로그인 form으로 파라미터값 error=true로 보낸다.
                 .and()
-            .csrf().disable();		//로그인 창
+            .csrf().disable(); //로그인 창
     }
 
     /*로그인 인증 처리 메소드
