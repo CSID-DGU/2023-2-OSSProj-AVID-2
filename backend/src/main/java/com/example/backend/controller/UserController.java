@@ -45,8 +45,8 @@ public class UserController {
     @GetMapping("/access")
     public String userAccess(Model model, Authentication authentication) {
         //Authentication 객체를 통해 유저 정보를 가져올 수 있다.
-        UserVo userVo = (UserVo) authentication.getPrincipal();  //userDetail 객체를 가져옴
-        model.addAttribute("info", userVo.getUserId() +"의 "+ userVo.getUserName()+ "님");      //유저 아이디
+        UserVo userVo = (UserVo) authentication.getPrincipal(); //userDetail 객체를 가져옴
+        model.addAttribute("info", userVo.getUserId() +"의 "+ userVo.getUserName()+ "님"); //유저 아이디
         return "access";
     }
 
@@ -63,6 +63,6 @@ public class UserController {
     @PostMapping("/signup")
     public String signUp(UserVo userVo) {
         userService.joinUser(userVo);
-        return "redirect:/login"; //로그인 구현 예정
+        return "redirect:/login";
     }
 }
