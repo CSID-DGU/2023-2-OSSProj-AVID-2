@@ -1,14 +1,20 @@
 package com.example.backend.controller;
 
+import com.example.backend.controller.request.UserJoinRequestDTO;
+import com.example.backend.controller.request.UserLoginRequestDTO;
+import com.example.backend.controller.response.Response;
+import com.example.backend.controller.response.UserHomeResponseDTO;
+import com.example.backend.controller.response.UserJoinResponseDTO;
+import com.example.backend.entity.UserEntity;
 import com.example.backend.service.UserService;
-import com.example.backend.vo.UserVo;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @RequiredArgsConstructor
@@ -17,52 +23,21 @@ public class UserController {
     @Autowired
     private final UserService userService;
 
-    /*localhost:8083 시 login 으로 redirect
-    @return*/
-    @GetMapping
-    public String root() {
-        return "redirect:/login";
-    }
-
-    /*로그인 폼
-    @return*/
-    @GetMapping("/login")
-    public String login(){
-        return "login";
-    }
-
-    /*로그인 실패 폼
-    @return*/
-    @GetMapping("/denied")
-    public String accessDenied() {
-        return "denied";
-    }
-
-    /*유저 페이지
-    @param model
-    @param authentication
-    @return*/
-    @GetMapping("/access")
-    public String userAccess(Model model, Authentication authentication) {
-        //Authentication 객체를 통해 유저 정보를 가져올 수 있다.
-        UserVo userVo = (UserVo) authentication.getPrincipal(); //userDetail 객체를 가져옴
-        model.addAttribute("info", userVo.getUserId() +"의 "+ userVo.getUserName()+ "님"); //유저 아이디
-        return "access";
-    }
-
-    /*회원가입 폼
-    @return*/
-    @GetMapping("/signup")
-    public String signUpForm() {
-        return "signup";
-    }
-
-    /*회원가입 진행
-    @param user
-    @return*/
     @PostMapping("/signup")
-    public String signUp(UserVo userVo) {
-        userService.joinUser(userVo);
-        return "redirect:/login";
+    public Response<UserJoinResponseDTO> join(@RequestBody UserJoinRequestDTO requestDTO) {
+        return Response.success(userService.join(requestDTO));
     }
+
+    @PostMapping("/login")
+    public Response<UserEntity> login(@RequestBody UserLoginRequestDTO requestDTO) {
+        return Response.success(userService.login(requestDTO.getUserNum(), requestDTO.getUserPwd()));
+
+    }
+
+    @GetMapping("/home")
+    public Response<UserHomeResponseDTO> home(Authentication authentication) {
+        return Response.success(userService.getHome(authentication.name()));
+    }
+
+
 }

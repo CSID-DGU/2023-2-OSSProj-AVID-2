@@ -1,46 +1,55 @@
 package com.example.backend.service;
 
-import com.example.backend.mapper.UserMapper;
-import com.example.backend.vo.UserVo;
+import com.example.backend.controller.request.UserJoinRequestDTO;
+import com.example.backend.controller.response.UserHomeResponseDTO;
+import com.example.backend.controller.response.UserJoinResponseDTO;
+
+import com.example.backend.entity.UserEntity;
+import com.example.backend.model.UserType;
+import com.example.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetailsService;
+
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 @Service
+@Transactional
 @RequiredArgsConstructor
-public class UserService implements UserDetailsService {
-    // 회원가입 시 저장시간을 넣어줄 DateTime형
-    SimpleDateFormat format = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:sss");
-    Date time = new Date();
-    String localTime = format.format(time);
+public class UserService {
 
     @Autowired
-    private final UserMapper userMapper;
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder encoder;
 
-    @Transactional
-    public void joinUser(UserVo userVo){
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        userVo.setUserPw(passwordEncoder.encode(userVo.getPassword()));
-        userVo.setUserAuth("USER");
-        userVo.setAppendDate(localTime);
-        userVo.setUpdateDate(localTime);
-        userMapper.saveUser(userVo);
+    public UserJoinResponseDTO join(UserJoinRequestDTO requestDTO) {
+
+        UserEntity user = UserEntity.saveUser(
+                requestDTO.getUserNum(),
+                requestDTO.getUserName(),
+                encoder.encode(requestDTO.getUserPwd()),
+                UserType.returnUserType(requestDTO.getUserType()));
+
+        UserJoinResponseDTO result = UserJoinResponseDTO.toUserJoinResponse(userRepository.save(user));
+
+        return result;
     }
 
-    @Override
-    public UserVo loadUserByUsername(String userId) throws UsernameNotFoundException {
-        //여기서 받은 유저 패스워드와 비교하여 로그인 인증
-        UserVo userVo = userMapper.getUserAccount(userId);
-        if (userVo == null){
-            throw new UsernameNotFoundException("User not authorized.");
+    public UserEntity login(String userNum, String userPwd) throws UsernameNotFoundException {
+        UserEntity user = userRepository.findByUserNum(userNum);
+
+        if(!encoder.matches(userPwd, user.getUserPwd())) {
+            throw new UsernameNotFoundException("비밀번호가 틀렸습니다.");
         }
-        return userVo;
+        return user;
+    }
+
+    public UserHomeResponseDTO getHome(String userNum) {
+        UserEntity user = userRepository
+                .findByUserNum(userNum);
+
+        return new UserHomeResponseDTO(user.getUserName(), user.getUserNum(), user.getUserType().name());
     }
 }

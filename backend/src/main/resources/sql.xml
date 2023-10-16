@@ -12,7 +12,7 @@
     <!-- 회원가입 -->
     <insert id="saveUser" parameterType="com.example.backend.vo.UserVo">
         INSERT INTO TB_USER
-            (USER_ID, USER_PW, USER_NAME, USER_AUTH, APPEND_DATE, UPDATE_DATE)
-        VALUES(#{userId},#{userPw},#{userName},#{userAuth},#{appendDate},#{updateDate});
+            (USER_ID, USER_PW, USER_NAME)
+        VALUES(#{userId},#{userPw},#{userName});
     </insert>
 </mapper>

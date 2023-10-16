@@ -2,6 +2,7 @@ server:
   port: 8083
 
 spring:
+  # DB 연동 설정
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://localhost:3306/user
@@ -13,8 +14,17 @@ spring:
     suffix: .html
     cache: false
 
-mybatis:
+  # spring data jpa 설정
+  jpa:
+    database-platform: org.hibernate.dialect.MariaDB106Dialect
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+# mybatis:
   # mapper 경로 지정
-  mapper-locations: resources/*.xml
-  configuration:
-    map-underscore-to-camel-case: true
+
+  # mapper-locations: resources/*.xml
+  # configuration:
+    # map-underscore-to-camel-case: true
