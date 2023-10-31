@@ -6,8 +6,10 @@ export const Container = styled.nav`
   top: 0;
   width: 100%;
   height: 30px;
-  //z-index: 1;
-  padding: 20px;
+  
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-right: 20px;
   display: flex;
   align-items: center;
   transition-timing-function: ease-in;

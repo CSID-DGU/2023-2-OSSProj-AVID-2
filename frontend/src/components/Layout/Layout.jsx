@@ -1,7 +1,6 @@
 import Nav from "./Nav"
 import { Outlet } from "react-router-dom"
 import { styled } from "styled-components" 
-import * as s from "./Styled.jsx"
 
 export const Container = styled.div`
     display: flex;
