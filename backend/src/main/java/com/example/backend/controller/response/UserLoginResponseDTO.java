@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class UserLoginResponseDTO {
 
-    private String userNum;
+    private String userID;
     private String userName;
     private String userType;
 }
