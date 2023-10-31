@@ -5,9 +5,8 @@ import com.example.backend.controller.request.UserLoginRequestDTO;
 import com.example.backend.controller.response.Response;
 import com.example.backend.controller.response.UserHomeResponseDTO;
 import com.example.backend.controller.response.UserJoinResponseDTO;
-import com.example.backend.entity.UserEntity;
+import com.example.backend.controller.response.UserLoginResponseDTO;
 import com.example.backend.service.UserService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +28,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Response<UserEntity> login(@RequestBody UserLoginRequestDTO requestDTO) {
-        return Response.success(userService.login(requestDTO.getUserNum(), requestDTO.getUserPwd()));
+    public Response<UserLoginResponseDTO> login(@RequestBody UserLoginRequestDTO requestDTO) {
+        return Response.success(userService.login(requestDTO.getUserID(), requestDTO.getUserPwd()));
 
     }
 

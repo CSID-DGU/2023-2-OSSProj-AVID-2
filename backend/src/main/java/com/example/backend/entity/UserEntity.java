@@ -16,21 +16,22 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String userNum;
+    private String userID;
     private String userPwd;
     private String userName;
+
     @Enumerated(EnumType.STRING)
     private UserType userType;
 
     @Builder
-    public UserEntity(String userNum, String userPwd, String userName, UserType userType) {
-        this.userNum = userNum;
+    public UserEntity(String userID, String userPwd, String userName, UserType userType) {
+        this.userID = userID;
         this.userPwd = userPwd;
         this.userName = userName;
         this.userType = userType;
     }
 
-    public static UserEntity saveUser(String userNum, String userPwd, String userName, UserType userType) {
-        return new UserEntity(userNum, userPwd, userName, userType);
+    public static UserEntity save(String userID, String userPwd, String userName, UserType userType) {
+        return new UserEntity(userID, userPwd, userName, userType);
     }
 }
