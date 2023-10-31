@@ -7,10 +7,12 @@ import styled from "styled-components";
 
 const Container = styled.div`
     padding: 20px;
+    margin-top: 40px;
     margin-left: 80px;
-    width: 75%;
-    height: 75%;
+    width: 80%;
+    height: 80%;
     position: relative;
+    
 `;
 
 function Calendar() {
@@ -39,6 +41,9 @@ function Calendar() {
         }}
         events={events}
         eventContent={renderEventContent}
+        height={"85vh"}
+        width={"85vh"}
+        locale={"ko"}
       />
     </Container>
   );
