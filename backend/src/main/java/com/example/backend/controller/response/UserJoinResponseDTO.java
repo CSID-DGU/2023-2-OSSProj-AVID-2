@@ -8,13 +8,13 @@ import lombok.Getter;
 @AllArgsConstructor
 public class UserJoinResponseDTO {
 
-    private String userNum;
-    private String userPwd;
+    private String userID;
+    private String userName;
     private String userType;
 
     public static UserJoinResponseDTO toUserJoinResponse(UserEntity user) {
         return new UserJoinResponseDTO(
-                user.getUserNum(),
+                user.getUserID(),
                 user.getUserName(),
                 user.getUserType().name()
         );

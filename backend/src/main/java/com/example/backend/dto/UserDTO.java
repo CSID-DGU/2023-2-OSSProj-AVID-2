@@ -12,7 +12,7 @@ import java.util.Collection;
 public class UserDTO implements UserDetails {
 
     private Long id;
-    private String userNum;
+    private String userID;
     private String userPwd;
     private String userName;
     private UserType userType;
@@ -55,7 +55,7 @@ public class UserDTO implements UserDetails {
     public static UserDTO fromEntity(UserEntity userEntity) {
         return new UserDTO(
                 userEntity.getId(),
-                userEntity.getUserNum(),
+                userEntity.getUserID(),
                 userEntity.getUserPwd(),
                 userEntity.getUserName(),
                 userEntity.getUserType()

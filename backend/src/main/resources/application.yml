@@ -20,8 +20,14 @@ spring:
     open-in-view: false
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
+    properties:
+      hibernate.format_sql: true
+      dialect: org.hibernate.dialect.MySQL8InnoDBDialect
 
+logging:
+  level:
+    org.hibernate.SQL: debug
 # mybatis:
   # mapper 경로 지정
 
