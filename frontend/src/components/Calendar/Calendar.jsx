@@ -5,21 +5,20 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import * as s from "./Styled.jsx";
 
-
 function Calendar() {
-    const events = [
-        { title: 'EX1', start: new Date('2023-10-29') },
-          { title: 'EX2', start: new Date('2023-10-30') }
-    ]
-    
-    const renderEventContent=(eventInfo)=> {
-        return (
-          <>
-            <i>{eventInfo.event.title}</i>
-          </>
-        )
-    }
-    
+  const events = [
+    { title: "EX1", start: new Date("2023-10-29") },
+    { title: "EX2", start: new Date("2023-10-30") },
+  ];
+
+  const renderEventContent = (eventInfo) => {
+    return (
+      <>
+        <i>{eventInfo.event.title}</i>
+      </>
+    );
+  };
+
   return (
     <s.CalendarContainer>
       <Fullcalendar

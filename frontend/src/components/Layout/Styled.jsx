@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes } from "styled-components";
 
 // nav
 export const Container = styled.nav`
@@ -6,7 +6,6 @@ export const Container = styled.nav`
   top: 0;
   width: 100%;
   height: 30px;
-  
   padding-top: 20px;
   padding-bottom: 20px;
   padding-right: 20px;
@@ -15,7 +14,7 @@ export const Container = styled.nav`
   transition-timing-function: ease-in;
   transition: all 0.5s;
   background-color: white;
-`
+`;
 
 export const LogoImg = styled.img`
   position: relative;
@@ -25,14 +24,13 @@ export const LogoImg = styled.img`
   width: 200px;
   object-fit: contain;
   cursor: pointer;
-`
+`;
 
 export const LoginBtnContainer = styled.button`
-
   position: relative;
   /* left: 230px; */
   width: 100px;
-  
+
   font: Noto Sans KR;
   display: block;
   font-size: 14px;
@@ -42,7 +40,7 @@ export const LoginBtnContainer = styled.button`
 
   border-radius: 2px;
   background: #e72f4b;
-`
+`;
 export const SignupBtnContainer = styled.button`
   position: relative;
   left: 10px;
@@ -57,4 +55,4 @@ export const SignupBtnContainer = styled.button`
 
   border-radius: 2px;
   background: #e72f4b;
-`
+`;
