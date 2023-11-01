@@ -1,23 +1,33 @@
 import React, { useState } from 'react';
+import API from '../../api/axios.jsx';
+import { Navigate } from 'react-router-dom';
 
 const SignUpPage = () => {
     const [studentId, setStudentId] = useState('');
     const [password, setPassword] = useState('');
     const [passwordCheck, setPasswordCheck] = useState('');
 
-    const handleSignup = (e) => {
-        e.preventDefault();
-        if (password !== passwordCheck) {
-            alert('Passwords do not match');
-            return;
+    async function SignUp(e) {
+        e.preventDefault(); // 기본 동작 중지
+        try {
+            // POST 요청 코드
+            const response = await API.post('/signup', {
+                userID: studentId,
+                userPwd: password,
+                userName: "test",
+                userType: "STUDENT"
+            });
+            console.log(response);
+        } catch (error) {
+            console.log("error");
+            console.error(error);
         }
-        // handle signup logic here
-    };
+    }
 
     return (
         <div>
             <h1>Sign Up</h1>
-            <form onSubmit={handleSignup}>
+            <form onSubmit={SignUp}>
                 <label htmlFor="studentId">학번:</label>
                 <input
                     type="text"

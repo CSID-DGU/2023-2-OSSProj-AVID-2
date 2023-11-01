@@ -1,22 +1,22 @@
 import React from 'react';
-import Calendar from './Calendar';
+import Calendar from '../Calendar/Calendar';
 import Notice from './Notice';
 import styled from 'styled-components';
-import AddBtn from './AddBtn';
+import AddBtn from '../Calendar/AddTodo';
 
-const Container = styled.div`
+const WrapperContainer = styled.div`
     position: relative;
     flex: 1;
 `;
 
-const Wrapper = () => {
+const MyPage = () => {
     return (
-        <Container>
+        <WrapperContainer>
             <AddBtn />
             <Calendar />
             <Notice />
-        </Container>
+        </WrapperContainer>
     );
 };
 
-export default Wrapper;
+export default MyPage;

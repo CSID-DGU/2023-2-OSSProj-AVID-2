@@ -3,17 +3,8 @@ import Fullcalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import styled from "styled-components";
+import * as s from "./Styled.jsx";
 
-const Container = styled.div`
-    padding: 20px;
-    margin-top: 40px;
-    margin-left: 80px;
-    width: 80%;
-    height: 80%;
-    position: relative;
-    
-`;
 
 function Calendar() {
     const events = [
@@ -30,14 +21,14 @@ function Calendar() {
     }
     
   return (
-    <Container>
+    <s.CalendarContainer>
       <Fullcalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView={"dayGridMonth"}
         headerToolbar={{
           start: "today prev,next", // will normally be on the left. if RTL, will be on the right
           center: "title",
-          end: "dayGridMonth,timeGridWeek,timeGridDay", // will normally be on the right. if RTL, will be on the left
+          end: "",
         }}
         events={events}
         eventContent={renderEventContent}
@@ -45,7 +36,7 @@ function Calendar() {
         width={"85vh"}
         locale={"ko"}
       />
-    </Container>
+    </s.CalendarContainer>
   );
 }
 

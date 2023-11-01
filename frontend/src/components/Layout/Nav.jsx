@@ -8,16 +8,20 @@ export default function Nav() {
 
   return(
     <s.Container>
-        <s.LogoImg 
-        alt = "DGU-Eclass-Logo"
-        src ="img/logo.png">
-        </s.LogoImg>
-
+          
+          <Link to="/">
+            <s.LogoImg 
+            alt = "DGU-Eclass-Logo"
+            src ="img/logo.png">
+            </s.LogoImg>
+          </Link>  
+        
           <Link to ="/login">
             <s.LoginBtnContainer>
               로그인
             </s.LoginBtnContainer>
           </Link>
+
           <Link to ="/signup">
             <s.SignupBtnContainer>
               회원가입

@@ -1,7 +1,6 @@
-import React from 'react';
 import styled from 'styled-components';
 
-const Container = styled.div`
+export const SideBarContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -11,15 +10,14 @@ const Container = styled.div`
     height: 100%;
 `;
 
-
-const MenuList = styled.ul`
+export const MenuList = styled.ul`
     list-style: none;
     margin: 0;
     padding: 0;
     width: 100%;
 `;
 
-const MenuItem = styled.li`
+export const MenuItem = styled.li`
     padding: 10px;
     font-size: 16px;
     font-weight: bold;
@@ -31,14 +29,3 @@ const MenuItem = styled.li`
         background-color: #ddd;
     }
 `;
-
-const SideBar = () => {
-        return (
-                <Container>
-                        <h4>사이버캠퍼스</h4> 
-                        
-                </Container>
-        );
-};
-
-export default SideBar;
