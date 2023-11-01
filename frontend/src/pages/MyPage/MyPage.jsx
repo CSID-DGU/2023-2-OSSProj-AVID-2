@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import Calendar from '../../components/MyPage/Calendar';
+
+import Wrapper from '../../components/MyPage/Wrapper';
 import SideBar from '../../components/MyPage/SideBar';
 
 const Container = styled.div`
@@ -16,8 +17,8 @@ const MyPage = () => {
         <Container>
             
             <SideBar />
-            
-            <Calendar />
+            <Wrapper />
+
         </Container>
     );
 };
