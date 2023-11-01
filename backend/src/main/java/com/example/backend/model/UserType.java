@@ -1,6 +1,6 @@
 package com.example.backend.model;
 
-public enum UserType {
+public enum UserType { // 열거형 상수
 
     STUDENT, PROFESSOR, EMPLOYEE;
 
