@@ -7,12 +7,8 @@ export const Container = styled.nav`
   width: 100%;
   height: 30px;
   padding-top: 20px;
-  padding-bottom: 20px;
-  padding-right: 20px;
   display: flex;
   align-items: center;
-  transition-timing-function: ease-in;
-  transition: all 0.5s;
   background-color: white;
 `;
 
