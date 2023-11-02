@@ -1,22 +1,12 @@
 import styled from "styled-components";
 
-export const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  margin: 0;
-`;
-
 export const Container = styled.div`
   width: 900px;
-  height: 500px;
   margin: 0 auto;
   padding: 20px;
   text-align: center;
-  border: 7px solid #e39a29;
-  border-radius: 40px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
+  border: 7px solid #cb6666;
+  border-radius: 5px;
 `;
 
 export const HeaderContainer = styled.div`
@@ -54,7 +44,7 @@ export const Label = styled.label`
 export const Input = styled.input`
   flex: 1;
   font-size: 1.3rem;
-  padding: 10px;
+  padding: 20px;
   border-radius: 5px;
   border: 5px solid #ddd;
   width: 100%;
@@ -63,20 +53,14 @@ export const Input = styled.input`
 
 export const SubmitButton = styled.button`
   padding: 10px;
-  width: 900px;
-  font-size: 4rem;
-  letter-spacing: 1rem;
-  font-family: "Nanum Gothic", sans-serif;
-  margin-left: 0 auto;
-  border-radius: 15px;
+  border-radius: 5px;
   background-color: rgb(233, 218, 218);
   color: rgb(156, 37, 37);
   border: 5px solid #ddd;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
   cursor: pointer;
 
   &:hover {
-    background-color: #e39a29;
+    background-color: #30b337;
   }
 `;
 
