@@ -3,11 +3,16 @@ package com.example.backend.controller;
 
 import com.example.backend.controller.request.CreateScheduleRequestDTO;
 import com.example.backend.controller.request.TaskRequestDTO;
+import com.example.backend.controller.response.EclassResponseDTO;
 import com.example.backend.controller.response.Response;
+import com.example.backend.controller.response.TaskDetailResponseDTO;
 import com.example.backend.service.ScheduleService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 // 과제 일정 api
 @RestController
@@ -16,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class TaskController {
     private final ScheduleService scheduleService;
 
-    @PostMapping("/task")
+    /*@PostMapping("/task")
     public Response<Void> createSubjectSchedule(@RequestBody TaskRequestDTO requestDTO, Authentication authentication){
         scheduleService.createTask(requestDTO, authentication.getName());
         return Response.success();
@@ -32,5 +37,15 @@ public class TaskController {
     public Response<Void> deleteSubjectSchedule(@PathVariable Long scheduleId,Authentication authentication){
         scheduleService.deleteTask(scheduleId,authentication.getName());
         return Response.success();
+    }*/
+
+    @GetMapping("/task")
+    public Response<List<EclassResponseDTO>> getSchedule(@RequestParam("subjectName") String subjectName, Authentication authentication) {
+        return Response.success(scheduleService.getTask(authentication.getName(), subjectName));
+    }
+
+    @GetMapping("/{scheduleId}")
+    public Response<TaskDetailResponseDTO> getScheduleDetail(@PathVariable Long scheduleId, Authentication authentication){
+        return Response.success(scheduleService.getTaskDetail(authentication.getName(), scheduleId));
     }
 }

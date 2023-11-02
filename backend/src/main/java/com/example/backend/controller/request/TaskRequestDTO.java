@@ -11,9 +11,7 @@ public class TaskRequestDTO {
     private String title;
     private String write;
     private String subjectName;
-    private String importance;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private String taskType;
-    private String scheduleType;
 }
