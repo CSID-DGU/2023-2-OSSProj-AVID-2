@@ -11,6 +11,7 @@ export const Container = styled.div`
 `;
 export const OutletContainer = styled.div`
   flex: 1; /* Outlet이 부모 컨테이너를 채우도록 설정 */
+  border-top: 1px solid #cdcdcd;
   margin-top: 30px; /* Nav 바 아래 간격 설정 */
 `;
 

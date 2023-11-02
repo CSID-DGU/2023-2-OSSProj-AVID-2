@@ -55,7 +55,7 @@ export const AddButton = styled.button`
     position: absolute;
     left: 83%;
     transition: all 0.2s ease-in-out;
-
+    margin-top: 40px;
     &:hover {
         background-color: #4339F2;
         transform: scale(1.1);
