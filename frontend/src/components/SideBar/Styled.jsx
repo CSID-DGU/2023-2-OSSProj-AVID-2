@@ -41,5 +41,5 @@ export const ListLine = styled.div`
   width: 170px;
   height: 3px;
   border-radius: 5px;
-  background-color: #ad9191;
+  background-color: #bd9b9b;
 `;
