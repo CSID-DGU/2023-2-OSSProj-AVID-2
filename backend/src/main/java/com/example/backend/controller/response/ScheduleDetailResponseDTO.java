@@ -19,23 +19,19 @@ public class ScheduleDetailResponseDTO {
     private String schedule;
     private String taskType;
     private String scheduleType;
-    private String importance;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private int dDay;
-    private String complete;
 
     @Builder
     private ScheduleDetailResponseDTO(PersonalScheduleEntity schedule){
         this.scheduleId = schedule.getId();
         this.title = schedule.getTitle();
         this.write = schedule.getWrite();
-        this.importance = schedule.getImportance().name();
         this.schedule = PersonalScheduleEntity.class.getAnnotation(DiscriminatorValue.class).value();
-        this.scheduleType = schedule.getScheduleType().name();
         this.startDate = schedule.getStartDate();
         this.endDate = schedule.getEndDate();
-        this.complete = schedule.getComplete().name();
+        this.scheduleType = schedule.getScheduleType().name();
         this.dDay = LocalDateTime.now().getDayOfYear() - schedule.getEndDate().getDayOfYear();
     }
     public static ScheduleDetailResponseDTO fromPersonalSchedule(PersonalScheduleEntity schedule) {
@@ -43,7 +39,7 @@ public class ScheduleDetailResponseDTO {
     }
 
     @Builder
-    private ScheduleDetailResponseDTO(TaskEntity schedule, String complete){
+    private ScheduleDetailResponseDTO(TaskEntity schedule){
         this.scheduleId = schedule.getId();
         this.title = schedule.getTitle();
         this.write = schedule.getWrite();
@@ -53,10 +49,9 @@ public class ScheduleDetailResponseDTO {
         this.subjectName = schedule.getSubject().getSubjectName();
         this.endDate = schedule.getEndDate();
         this.dDay = LocalDateTime.now().getDayOfYear() - schedule.getEndDate().getDayOfYear();
-        this.complete = complete;
     }
 
-    public static ScheduleDetailResponseDTO fromTask(TaskEntity schedule, String complete){
-        return new ScheduleDetailResponseDTO(schedule, complete);
+    public static ScheduleDetailResponseDTO fromTask(TaskEntity schedule){
+        return new ScheduleDetailResponseDTO(schedule);
     }
 }
