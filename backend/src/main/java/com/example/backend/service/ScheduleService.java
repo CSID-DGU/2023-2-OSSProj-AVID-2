@@ -7,8 +7,12 @@ import com.example.backend.controller.response.*;
 import com.example.backend.entity.*;
 import com.example.backend.exception.ErrorCode;
 import com.example.backend.exception.Exception;
+import com.example.backend.model.TaskType;
+import com.example.backend.model.UserType;
 import com.example.backend.repository.*;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,9 +80,9 @@ public class ScheduleService {
     public void deletePersonalSchedule(Long scheduleId, String userID) {
         UserEntity user = userRepository.findByUserID(userID)
                 .orElseThrow(() -> new Exception(ErrorCode.USER_NOT_FOUND, String.format("%s 학번을 가진 유자가 없습니다.", userID)));
-        PersonalScheduleEntity personalSchedule = PersonalScheduleRepository.findByIdAndUser(scheduleId, user)
+        PersonalScheduleEntity schedule = PersonalScheduleRepository.findByIdAndUser(scheduleId, user)
                 .orElseThrow(() -> new Exception(ErrorCode.SCHEDULE_NOT_FOUND, String.format("%s 유저가 작성한 %d 일정을 찾을 수 없습니다.", userID, scheduleId)));
-        PersonalScheduleRepository.delete(personalSchedule);
+        PersonalScheduleRepository.delete(schedule);
     }
 
     public void modifyPersonalSchedule(Long scheduleId, String userID, ModifyScheduleRequestDTO requestDTO) {
@@ -101,12 +105,65 @@ public class ScheduleService {
         String scheduleType = scheduleRepository.findScheduleType(scheduleId);
         if (scheduleType.equals("COMMON"))
             return ScheduleDetailResponseDTO.fromPersonalSchedule((PersonalScheduleEntity) schedule);
-        if (scheduleType.equals("SUBJECT"))
-            return ScheduleDetailResponseDTO.fromTask((TaskEntity) schedule);
         String complete = userTaskRepository.findByScheduleAndUser((TaskEntity) schedule, user)
                 .orElseThrow(() -> new Exception(ErrorCode.SCHEDULE_TYPE_PROBLEM))
                 .getComplete().name();
         return ScheduleDetailResponseDTO.fromTask((TaskEntity) schedule, complete);
+    }
+
+    public void writeTask(TaskRequestDTO requestDTO, String userId) {
+        UserEntity user = userRepository
+                .findByUserID(userId)
+                .orElseThrow(() -> new Exception(ErrorCode.USER_NOT_FOUND, String.format("%s 학번을 가진 유자가 없습니다.", userId)));
+        SubjectEntity subject = subjectRepository
+                .findBySubjectName(requestDTO.getSubjectName())
+                .orElseThrow(() -> new Exception(ErrorCode.SUBJECT_NOT_FOUND, String.format("%s 과목이 존재하지 않습니다.", requestDTO.getSubjectName())));
+        TaskEntity subjectSchedule = TaskEntity.fromTaskDTO(requestDTO, subject, user);
+        taskRepository.saveAndFlush(subjectSchedule);
+        List<UserEntity> users = userSubjectRepository
+                .findAllBySubject(subject)
+                .stream()
+                .map(UserSubjectEntity::getUser)
+                .collect(Collectors.toList());
+        for (UserEntity listener : users) {
+            userTaskRepository.save(UserTaskEntity.newAssignmentFromOfficial(listener, subjectSchedule));
+        }
+    }
+
+    public void modifyTask(TaskRequestDTO requestDTO, Long scheduleId, String userId) {
+        UserEntity user = userRepository
+                .findByUserID(userId)
+                .orElseThrow(() -> new Exception(ErrorCode.USER_NOT_FOUND, String.format("%s 학번을 가진 유자가 없습니다.", userId)));
+        SubjectEntity subject = subjectRepository
+                .findBySubjectName(requestDTO.getSubjectName())
+                .orElseThrow(() -> new Exception(ErrorCode.SUBJECT_NOT_FOUND, String.format("%s 과목이 존재하지 않습니다.", requestDTO.getSubjectName())));
+        TaskEntity schedule = taskRepository
+                .findById(scheduleId)
+                .orElseThrow(() -> new Exception(ErrorCode.SCHEDULE_NOT_FOUND, String.format("%d 일정을 확인할 수 없습니다.", scheduleId)));
+        if (!(schedule.getTaskType() == TaskType.ASSIGNMENT) && requestDTO.getTaskType().equals("ASSIGNMENT")) {
+            List<UserEntity> users = userSubjectRepository
+                    .findAllBySubject(subject)
+                    .stream()
+                    .map(UserSubjectEntity::getUser)
+                    .collect(Collectors.toList());
+            for (UserEntity listener : users) {
+                userTaskRepository.save(UserTaskEntity.newAssignmentFromOfficial(listener, schedule));
+            }
+        }
+        if ((schedule.getTaskType() == TaskType.ASSIGNMENT) && !requestDTO.getTaskType().equals("ASSIGNMENT")) {
+            userTaskRepository.deleteAllBySchedule(schedule);
+        }
+        schedule.modifySchedule(requestDTO);
+    }
+
+    public void deleteTask(Long scheduleId, String userId) {
+        UserEntity user = userRepository
+                .findByUserID(userId)
+                .orElseThrow(() -> new Exception(ErrorCode.USER_NOT_FOUND, String.format("%s 학번을 가진 유자가 없습니다.", userId)));
+        TaskEntity schedule = taskRepository
+                .findByUserAndId(user, scheduleId)
+                .orElseThrow(() -> new Exception(ErrorCode.SCHEDULE_NOT_FOUND, String.format("%d 일정을 확인할 수 없습니다.", scheduleId)));
+        taskRepository.delete(schedule);
     }
 
     public List<EclassResponseDTO> getTask(String userID, String subjectName) {

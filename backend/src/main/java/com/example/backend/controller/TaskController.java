@@ -16,28 +16,28 @@ import java.util.List;
 
 // 과제 일정 api
 @RestController
-@RequestMapping("/schedule")
+@RequestMapping("/calendar")
 @RequiredArgsConstructor
 public class TaskController {
     private final ScheduleService scheduleService;
 
-    /*@PostMapping("/task")
-    public Response<Void> createSubjectSchedule(@RequestBody TaskRequestDTO requestDTO, Authentication authentication){
-        scheduleService.createTask(requestDTO, authentication.getName());
+    @PostMapping("/task")
+    public Response<Void> createTask(@RequestBody TaskRequestDTO requestDTO, Authentication authentication){
+        scheduleService.writeTask(requestDTO, authentication.getName());
         return Response.success();
     }
 
     @PutMapping("/task/{scheduleId}")
-    public Response<Void> modifySubjectSchedule(@RequestBody TaskRequestDTO requestDTO, @PathVariable Long scheduleId, Authentication authentication){
+    public Response<Void> modifyTask(@RequestBody TaskRequestDTO requestDTO, @PathVariable Long scheduleId, Authentication authentication){
         scheduleService.modifyTask(requestDTO, scheduleId,authentication.getName());
         return Response.success();
     }
 
     @DeleteMapping("/task/{scheduleId}")
-    public Response<Void> deleteSubjectSchedule(@PathVariable Long scheduleId,Authentication authentication){
+    public Response<Void> deleteTask(@PathVariable Long scheduleId,Authentication authentication){
         scheduleService.deleteTask(scheduleId,authentication.getName());
         return Response.success();
-    }*/
+    }
 
     @GetMapping("/task")
     public Response<List<EclassResponseDTO>> getSchedule(@RequestParam("subjectName") String subjectName, Authentication authentication) {
