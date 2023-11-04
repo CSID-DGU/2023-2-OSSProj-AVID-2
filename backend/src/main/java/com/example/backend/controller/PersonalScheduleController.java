@@ -16,13 +16,13 @@ import java.time.YearMonth;
 
 // 개인 스케쥴 관련 api
 @RestController
-@RequestMapping("/schedule")
+@RequestMapping("/calendar")
 @RequiredArgsConstructor
 public class PersonalScheduleController {
     private final ScheduleService scheduleService;
 
     @PostMapping("/personal")
-    public Response<Void> registerPersonalSchedule(@RequestBody CreateScheduleRequestDTO requestDTO, Authentication authentication){
+    public Response<Void> createSchedule(@RequestBody CreateScheduleRequestDTO requestDTO, Authentication authentication){
         scheduleService.createPersonalSchedule(requestDTO, authentication.getName());
         return Response.success();
     }

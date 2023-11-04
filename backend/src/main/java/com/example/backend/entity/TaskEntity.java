@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Table(name = "task")
 @NoArgsConstructor
 @Getter
-@DiscriminatorValue("SUBJECT")
+@DiscriminatorValue("TASK")
 public class TaskEntity extends ScheduleEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)

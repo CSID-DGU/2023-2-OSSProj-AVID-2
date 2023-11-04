@@ -2,9 +2,9 @@ package com.example.backend.entity;
 
 import com.example.backend.controller.request.CreateScheduleRequestDTO;
 import com.example.backend.controller.request.ModifyScheduleRequestDTO;
-import com.example.backend.model.ScheduleType;
 import com.example.backend.model.Complete;
 import com.example.backend.model.Importance;
+import com.example.backend.model.ScheduleType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -61,7 +61,7 @@ public class PersonalScheduleEntity extends ScheduleEntity {
         this.complete = Complete.returnType(requestDTO.getScheduleType());
     }
 
-    public void updateUserComplete() {
+    public void updatePersonalComplete() {
         if(this.getComplete().name().equals("FALSE")) {
             this.complete = Complete.TRUE;
             return;

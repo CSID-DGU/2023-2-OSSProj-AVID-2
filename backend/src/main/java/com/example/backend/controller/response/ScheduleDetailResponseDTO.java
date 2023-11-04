@@ -17,7 +17,7 @@ public class ScheduleDetailResponseDTO {
     private String subjectName;
     private String write;
     private String schedule;
-    private String subjectScheduleType;
+    private String taskType;
     private String scheduleType;
     private String importance;
     private LocalDateTime startDate;
@@ -43,22 +43,20 @@ public class ScheduleDetailResponseDTO {
     }
 
     @Builder
-    private ScheduleDetailResponseDTO(TaskEntity schedule){
+    private ScheduleDetailResponseDTO(TaskEntity schedule, String complete){
         this.scheduleId = schedule.getId();
         this.title = schedule.getTitle();
         this.write = schedule.getWrite();
-        this.importance = schedule.getImportance().name();
         this.schedule = TaskEntity.class.getAnnotation(DiscriminatorValue.class).value();
-        this.scheduleType = schedule.getScheduleType().name();
         this.startDate = schedule.getStartDate();
-        this.subjectScheduleType = schedule.getScheduleType().name();
+        this.taskType = schedule.getTaskType().name();
         this.subjectName = schedule.getSubject().getSubjectName();
         this.endDate = schedule.getEndDate();
-        this.complete = schedule.getComplete().name();
         this.dDay = LocalDateTime.now().getDayOfYear() - schedule.getEndDate().getDayOfYear();
+        this.complete = complete;
     }
 
-    public static ScheduleDetailResponseDTO fromTask(TaskEntity schedule){
-        return new ScheduleDetailResponseDTO(schedule);
+    public static ScheduleDetailResponseDTO fromTask(TaskEntity schedule, String complete){
+        return new ScheduleDetailResponseDTO(schedule, complete);
     }
 }
