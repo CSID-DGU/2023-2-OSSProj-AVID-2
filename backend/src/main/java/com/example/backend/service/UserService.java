@@ -10,6 +10,7 @@ import com.example.backend.exception.Exception;
 import com.example.backend.model.UserType;
 import com.example.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,7 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.util.Collections;
 
 @Service
 @Transactional
@@ -33,7 +34,7 @@ public class UserService implements UserDetailsService {
         UserEntity userentity = userRepository.findByUserID(userID)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with userID: " + userID));
 
-        return new User(userID, userentity.getUserPwd(), new ArrayList<>());
+        return new User(userID, userentity.getUserPwd(), Collections.singleton(new SimpleGrantedAuthority("USER")));
     }
     public UserJoinResponseDTO join(UserJoinRequestDTO requestDTO) {
         userRepository.findByUserID(requestDTO.getUserID())
