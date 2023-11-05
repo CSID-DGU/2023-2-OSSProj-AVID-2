@@ -16,30 +16,30 @@ import java.util.List;
 
 // 과제 일정 api
 @RestController
-@RequestMapping("/calendar")
+@RequestMapping("/schedule/task")
 @RequiredArgsConstructor
 public class TaskController {
     private final ScheduleService scheduleService;
 
-    @PostMapping("/task")
+    @PostMapping("")
     public Response<Void> createTask(@RequestBody TaskRequestDTO requestDTO, Authentication authentication){
         scheduleService.writeTask(requestDTO, authentication.getName());
         return Response.success();
     }
 
-    @PutMapping("/task/{scheduleId}")
+    @PutMapping("/{scheduleId}")
     public Response<Void> modifyTask(@RequestBody TaskRequestDTO requestDTO, @PathVariable Long scheduleId, Authentication authentication){
         scheduleService.modifyTask(requestDTO, scheduleId,authentication.getName());
         return Response.success();
     }
 
-    @DeleteMapping("/task/{scheduleId}")
+    @DeleteMapping("/{scheduleId}")
     public Response<Void> deleteTask(@PathVariable Long scheduleId,Authentication authentication){
         scheduleService.deleteTask(scheduleId,authentication.getName());
         return Response.success();
     }
 
-    @GetMapping("/task")
+    @GetMapping("")
     public Response<List<EclassResponseDTO>> getSchedule(@RequestParam("subjectName") String subjectName, Authentication authentication) {
         return Response.success(scheduleService.getTask(authentication.getName(), subjectName));
     }

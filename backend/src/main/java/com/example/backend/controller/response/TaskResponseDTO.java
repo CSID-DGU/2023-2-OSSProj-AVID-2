@@ -19,9 +19,8 @@ public class TaskResponseDTO {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private int dDay;
-    private String complete;
 
-    public static TaskResponseDTO fromTask(TaskEntity schedule, String complete){
+    public static TaskResponseDTO fromTask(TaskEntity schedule){
         return new TaskResponseDTO(
                 schedule.getId(),
                 schedule.getTitle(),
@@ -31,8 +30,7 @@ public class TaskResponseDTO {
                 schedule.getTaskType().name(),
                 schedule.getStartDate(),
                 schedule.getEndDate(),
-                LocalDateTime.now().getDayOfYear() - schedule.getEndDate().getDayOfYear(),
-                complete
+                LocalDateTime.now().getDayOfYear() - schedule.getEndDate().getDayOfYear()
         );
     }
 }

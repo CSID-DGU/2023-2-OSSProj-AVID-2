@@ -16,7 +16,7 @@ import java.time.YearMonth;
 
 // 개인 스케쥴 관련 api
 @RestController
-@RequestMapping("/calendar")
+@RequestMapping("/schedule")
 @RequiredArgsConstructor
 public class PersonalScheduleController {
     private final ScheduleService scheduleService;
@@ -35,9 +35,10 @@ public class PersonalScheduleController {
     }
 
     @GetMapping("/{scheduleId}")
-    public Response<ScheduleDetailResponseDTO> getSchedule(Authentication authentication, @PathVariable Long scheduleId){
+    public Response<ScheduleDetailResponseDTO> getScheduleDetail(Authentication authentication, @PathVariable Long scheduleId){
         return Response.success(scheduleService.getScheduleDetail(authentication.getName(), scheduleId));
     }
+
     @DeleteMapping("/personal/{scheduleId}")
     public Response<Void> deleteSchedule(@PathVariable Long scheduleId, Authentication authentication){
         scheduleService.deletePersonalSchedule(scheduleId, authentication.getName());

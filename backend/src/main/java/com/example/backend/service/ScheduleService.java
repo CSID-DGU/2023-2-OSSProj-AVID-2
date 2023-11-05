@@ -8,7 +8,6 @@ import com.example.backend.entity.*;
 import com.example.backend.exception.ErrorCode;
 import com.example.backend.exception.Exception;
 import com.example.backend.model.TaskType;
-import com.example.backend.model.UserType;
 import com.example.backend.repository.*;
 
 import lombok.RequiredArgsConstructor;
@@ -61,10 +60,7 @@ public class ScheduleService {
                     .setParameter("endMonth", month)
                     .getResultList();
             for (TaskEntity schedule : task) {
-                String complete = userTaskRepository.findByScheduleAndUser(schedule, user)
-                        .orElseThrow(() -> new Exception(ErrorCode.SCHEDULE_TYPE_PROBLEM))
-                        .getComplete().name();
-                tSchedules.add(TaskResponseDTO.fromTask(schedule, complete));
+                tSchedules.add(TaskResponseDTO.fromTask(schedule));
             }
         }
         return new ScheduleResponseDTO(pSchedules, tSchedules);
@@ -74,15 +70,15 @@ public class ScheduleService {
         UserEntity user = userRepository.findByUserID(userID)
                 .orElseThrow(() -> new Exception(ErrorCode.USER_NOT_FOUND, String.format("%s 학번을 가진 유자가 없습니다.", userID)));
         PersonalScheduleEntity schedule = PersonalScheduleEntity.fromPersonalScheduleDTO(requestDTO, user);
-        PersonalScheduleRepository.save(schedule);
+        personalScheduleRepository.save(schedule);
     }
 
     public void deletePersonalSchedule(Long scheduleId, String userID) {
         UserEntity user = userRepository.findByUserID(userID)
                 .orElseThrow(() -> new Exception(ErrorCode.USER_NOT_FOUND, String.format("%s 학번을 가진 유자가 없습니다.", userID)));
-        PersonalScheduleEntity schedule = PersonalScheduleRepository.findByIdAndUser(scheduleId, user)
+        PersonalScheduleEntity schedule = personalScheduleRepository.findByIdAndUser(scheduleId, user)
                 .orElseThrow(() -> new Exception(ErrorCode.SCHEDULE_NOT_FOUND, String.format("%s 유저가 작성한 %d 일정을 찾을 수 없습니다.", userID, scheduleId)));
-        PersonalScheduleRepository.delete(schedule);
+        personalScheduleRepository.delete(schedule);
     }
 
     public void modifyPersonalSchedule(Long scheduleId, String userID, ModifyScheduleRequestDTO requestDTO) {
@@ -90,11 +86,7 @@ public class ScheduleService {
                 .orElseThrow(() -> new Exception(ErrorCode.USER_NOT_FOUND, String.format("%s 학번을 가진 유자가 없습니다.", userID)));
         PersonalScheduleEntity personalSchedule = personalScheduleRepository.findByIdAndUser(scheduleId, user)
                 .orElseThrow(() -> new Exception(ErrorCode.SCHEDULE_NOT_FOUND, String.format("%s 유저가 작성한 %d 일정을 찾을 수 없습니다.", userID, scheduleId)));
-        if (personalSchedule.getComplete().name().equals("TRUE")) {
-            personalSchedule.modifySchedule(requestDTO, "done");
-            return;
-        }
-        personalSchedule.modifySchedule(requestDTO, requestDTO.getScheduleType());
+        personalSchedule.modifySchedule(requestDTO);
     }
 
     public ScheduleDetailResponseDTO getScheduleDetail(String userID, Long scheduleId) {
@@ -105,10 +97,7 @@ public class ScheduleService {
         String scheduleType = scheduleRepository.findScheduleType(scheduleId);
         if (scheduleType.equals("COMMON"))
             return ScheduleDetailResponseDTO.fromPersonalSchedule((PersonalScheduleEntity) schedule);
-        String complete = userTaskRepository.findByScheduleAndUser((TaskEntity) schedule, user)
-                .orElseThrow(() -> new Exception(ErrorCode.SCHEDULE_TYPE_PROBLEM))
-                .getComplete().name();
-        return ScheduleDetailResponseDTO.fromTask((TaskEntity) schedule, complete);
+        return ScheduleDetailResponseDTO.fromTask((TaskEntity) schedule);
     }
 
     public void writeTask(TaskRequestDTO requestDTO, String userId) {
@@ -185,10 +174,7 @@ public class ScheduleService {
                 .orElseThrow(() -> new Exception(ErrorCode.USER_NOT_FOUND, String.format("%s 학번을 가진 유자가 없습니다.", userID)));
         TaskEntity schedule = taskRepository.findById(scheduleId)
                 .orElseThrow(() -> new Exception(ErrorCode.SCHEDULE_NOT_FOUND));
-        String complete = userTaskRepository.findByScheduleAndUser(schedule, user)
-                .orElseThrow(() -> new Exception(ErrorCode.SCHEDULE_TYPE_PROBLEM))
-                .getComplete().name();
-        return TaskDetailResponseDTO.taskResponseDTO(schedule, complete);
+        return TaskDetailResponseDTO.taskResponseDTO(schedule);
     }
 }
 
