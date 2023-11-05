@@ -13,7 +13,7 @@ public class TaskResponseDTO {
     private Long scheduleId;
     private String title;
     private String subjectName;
-    private String write;
+    private String content;
     private String schedule;
     private String taskType;
     private LocalDateTime startDate;
@@ -25,7 +25,7 @@ public class TaskResponseDTO {
                 schedule.getId(),
                 schedule.getTitle(),
                 schedule.getSubject().getSubjectName(),
-                schedule.getWrite(),
+                schedule.getContent(),
                 TaskEntity.class.getAnnotation(DiscriminatorValue.class).value(),
                 schedule.getTaskType().name(),
                 schedule.getStartDate(),
