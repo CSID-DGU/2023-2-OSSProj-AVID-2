@@ -9,9 +9,8 @@ import java.time.LocalDateTime;
 @Getter
 public class ModifyScheduleRequestDTO {
     private String title;
-    private String write;
-    private String importance;
-    private String scheduleType;
+    private String content;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    private String scheduleType;
 }

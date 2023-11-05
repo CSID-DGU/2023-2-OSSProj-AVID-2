@@ -22,8 +22,9 @@ public class PersonalScheduleController {
     private final ScheduleService scheduleService;
 
     @PostMapping("/personal")
-    public Response<Void> registerPersonalSchedule(@RequestBody CreateScheduleRequestDTO requestDTO, Authentication authentication){
-        scheduleService.createPersonalSchedule(requestDTO, authentication.getName());
+    public Response<Void> createSchedule(@RequestBody CreateScheduleRequestDTO requestDTO){
+        String userID = "2019111598";
+        scheduleService.createPersonalSchedule(requestDTO, userID);
         return Response.success();
     }
 
@@ -35,9 +36,10 @@ public class PersonalScheduleController {
     }
 
     @GetMapping("/{scheduleId}")
-    public Response<ScheduleDetailResponseDTO> getSchedule(Authentication authentication, @PathVariable Long scheduleId){
+    public Response<ScheduleDetailResponseDTO> getScheduleDetail(Authentication authentication, @PathVariable Long scheduleId){
         return Response.success(scheduleService.getScheduleDetail(authentication.getName(), scheduleId));
     }
+
     @DeleteMapping("/personal/{scheduleId}")
     public Response<Void> deleteSchedule(@PathVariable Long scheduleId, Authentication authentication){
         scheduleService.deletePersonalSchedule(scheduleId, authentication.getName());

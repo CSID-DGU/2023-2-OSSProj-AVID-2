@@ -15,27 +15,23 @@ public class ScheduleDetailResponseDTO {
     private Long scheduleId;
     private String title;
     private String subjectName;
-    private String write;
+    private String content;
     private String schedule;
-    private String subjectScheduleType;
+    private String taskType;
     private String scheduleType;
-    private String importance;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private int dDay;
-    private String complete;
 
     @Builder
     private ScheduleDetailResponseDTO(PersonalScheduleEntity schedule){
         this.scheduleId = schedule.getId();
         this.title = schedule.getTitle();
-        this.write = schedule.getWrite();
-        this.importance = schedule.getImportance().name();
+        this.content = schedule.getContent();
         this.schedule = PersonalScheduleEntity.class.getAnnotation(DiscriminatorValue.class).value();
-        this.scheduleType = schedule.getScheduleType().name();
         this.startDate = schedule.getStartDate();
         this.endDate = schedule.getEndDate();
-        this.complete = schedule.getComplete().name();
+        this.scheduleType = schedule.getScheduleType().name();
         this.dDay = LocalDateTime.now().getDayOfYear() - schedule.getEndDate().getDayOfYear();
     }
     public static ScheduleDetailResponseDTO fromPersonalSchedule(PersonalScheduleEntity schedule) {
@@ -46,15 +42,12 @@ public class ScheduleDetailResponseDTO {
     private ScheduleDetailResponseDTO(TaskEntity schedule){
         this.scheduleId = schedule.getId();
         this.title = schedule.getTitle();
-        this.write = schedule.getWrite();
-        this.importance = schedule.getImportance().name();
+        this.content = schedule.getContent();
         this.schedule = TaskEntity.class.getAnnotation(DiscriminatorValue.class).value();
-        this.scheduleType = schedule.getScheduleType().name();
         this.startDate = schedule.getStartDate();
-        this.subjectScheduleType = schedule.getScheduleType().name();
+        this.taskType = schedule.getTaskType().name();
         this.subjectName = schedule.getSubject().getSubjectName();
         this.endDate = schedule.getEndDate();
-        this.complete = schedule.getComplete().name();
         this.dDay = LocalDateTime.now().getDayOfYear() - schedule.getEndDate().getDayOfYear();
     }
 

@@ -1,9 +1,6 @@
 package com.example.backend.entity;
 
 import com.example.backend.controller.request.TaskRequestDTO;
-import com.example.backend.model.ScheduleType;
-import com.example.backend.model.Complete;
-import com.example.backend.model.Importance;
 import com.example.backend.model.TaskType;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +12,7 @@ import javax.persistence.*;
 @Table(name = "task")
 @NoArgsConstructor
 @Getter
-@DiscriminatorValue("SUBJECT")
+@DiscriminatorValue("TASK")
 public class TaskEntity extends ScheduleEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -31,7 +28,7 @@ public class TaskEntity extends ScheduleEntity {
         this.user = user;
         this.startMonth = requestDTO.getStartDate().getMonth();
         this.endMonth = requestDTO.getEndDate().getMonth();
-        this.write = requestDTO.getWrite();
+        this.content = requestDTO.getContent();
         this.startDate = requestDTO.getStartDate();
         this.endDate = requestDTO.getEndDate();
         this.taskType = TaskType.returnType(requestDTO.getTaskType());
@@ -47,7 +44,7 @@ public class TaskEntity extends ScheduleEntity {
         this.title = requestDTO.getTitle();
         this.startMonth = requestDTO.getStartDate().getMonth();
         this.endMonth = requestDTO.getEndDate().getMonth();
-        this.write = requestDTO.getWrite();
+        this.content = requestDTO.getContent();
         this.startDate = requestDTO.getStartDate();
         this.endDate = requestDTO.getEndDate();
         this.taskType = TaskType.returnType(requestDTO.getTaskType());

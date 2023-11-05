@@ -12,22 +12,20 @@ public class TaskDetailResponseDTO {
     private Long scheduleId;
     private String title;
     private String taskType;
-    private String write;
+    private String content;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private int dDay;
-    private String complete;
 
-    public static TaskDetailResponseDTO taskResponseDTO(TaskEntity schedule, String complete){
+    public static TaskDetailResponseDTO taskResponseDTO(TaskEntity schedule){
         return new TaskDetailResponseDTO(
                 schedule.getId(),
                 schedule.getTitle(),
                 schedule.getTaskType().name(),
-                schedule.getWrite(),
+                schedule.getContent(),
                 schedule.getStartDate(),
                 schedule.getEndDate(),
-                LocalDateTime.now().getDayOfMonth() - schedule.getEndDate().getDayOfMonth(),
-                complete
+                LocalDateTime.now().getDayOfMonth() - schedule.getEndDate().getDayOfMonth()
         );
     }
 }
