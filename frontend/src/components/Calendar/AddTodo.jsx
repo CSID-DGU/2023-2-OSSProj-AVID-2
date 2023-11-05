@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import * as s from "./Styled.jsx"
 
+import API from "../../api/axios.jsx";
 
 const customModalStyles = {
     content: {
@@ -38,12 +39,25 @@ const AddBtn = () => {
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
 
-    const handleAddEvent = () => {
-        // handle adding event to calendar
-        console.log("Title:", title);
-        console.log("Tags:", tags);
-        console.log("Start Date:", startDate);
-        console.log("End Date:", endDate);
+
+    const handleAddEvent = async (e) => {
+        e.preventDefault();
+
+        const data = {
+            title: title,
+            content: tags,
+            scheduleType: 'COMMON',
+            startDate: '2023-11-04T17:17:36',
+            endDate: '2023-11-06T17:17:36',
+        };
+
+        try {
+            const response = await API.post('/schedule/personal', data);
+            console.log(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+
         setModalIsOpen(false);
     };
 
