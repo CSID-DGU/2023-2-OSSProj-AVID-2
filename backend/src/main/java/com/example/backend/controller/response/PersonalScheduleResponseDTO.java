@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class PersonalScheduleResponseDTO {
     private Long scheduleId;
     private String title;
-    private String write;
+    private String content;
     private String schedule;
     private String scheduleType;
     private LocalDateTime startDate;
@@ -24,7 +24,7 @@ public class PersonalScheduleResponseDTO {
     public PersonalScheduleResponseDTO(PersonalScheduleEntity schedule){
         this.scheduleId = schedule.getId();
         this.title = schedule.getTitle();
-        this.write = schedule.getWrite();
+        this.content = schedule.getContent();
         this.schedule = PersonalScheduleEntity.class.getAnnotation(DiscriminatorValue.class).value();
         this.startDate = schedule.getStartDate();
         this.endDate = schedule.getEndDate();

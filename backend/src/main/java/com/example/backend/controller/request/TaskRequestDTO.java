@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 public class TaskRequestDTO {
     private String title;
-    private String write;
+    private String content;
     private String subjectName;
     private LocalDateTime startDate;
     private LocalDateTime endDate;

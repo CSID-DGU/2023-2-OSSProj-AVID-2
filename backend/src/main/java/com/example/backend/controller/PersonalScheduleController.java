@@ -22,8 +22,9 @@ public class PersonalScheduleController {
     private final ScheduleService scheduleService;
 
     @PostMapping("/personal")
-    public Response<Void> createSchedule(@RequestBody CreateScheduleRequestDTO requestDTO, Authentication authentication){
-        scheduleService.createPersonalSchedule(requestDTO, authentication.getName());
+    public Response<Void> createSchedule(@RequestBody CreateScheduleRequestDTO requestDTO){
+        String userID = "2019111598";
+        scheduleService.createPersonalSchedule(requestDTO, userID);
         return Response.success();
     }
 

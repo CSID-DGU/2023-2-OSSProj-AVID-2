@@ -1,13 +1,11 @@
 package com.example.backend.controller;
 
 
-import com.example.backend.controller.request.CreateScheduleRequestDTO;
 import com.example.backend.controller.request.TaskRequestDTO;
 import com.example.backend.controller.response.EclassResponseDTO;
 import com.example.backend.controller.response.Response;
 import com.example.backend.controller.response.TaskDetailResponseDTO;
 import com.example.backend.service.ScheduleService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +20,9 @@ public class TaskController {
     private final ScheduleService scheduleService;
 
     @PostMapping("")
-    public Response<Void> createTask(@RequestBody TaskRequestDTO requestDTO, Authentication authentication){
-        scheduleService.writeTask(requestDTO, authentication.getName());
+    public Response<Void> createTask(@RequestBody TaskRequestDTO requestDTO){
+        String userID = "2019111598";
+        scheduleService.writeTask(requestDTO, userID);
         return Response.success();
     }
 

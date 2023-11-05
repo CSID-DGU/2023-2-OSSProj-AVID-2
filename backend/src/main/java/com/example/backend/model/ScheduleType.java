@@ -5,6 +5,7 @@ public enum ScheduleType {
 
     public static ScheduleType returnType(String type) {
         if(type.equals("TASK")) return ScheduleType.TASK;
-        return SCHEDULE;
+        if(type.equals("SCHEDULE")) return ScheduleType.SCHEDULE;
+        return null;
     }
 }
