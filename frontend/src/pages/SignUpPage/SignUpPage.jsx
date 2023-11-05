@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import API from "../../api/axios.jsx";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as s from "./Styled.jsx";
 
 const SignUpPage = () => {
   const [Name, setName] = useState("");
   const [userType, setUserType] = useState(""); // 유저 타입 추가
   const [studentId, setStudentId] = useState("");
-  const [studentEmail, setStudentEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
+  const navigate = useNavigate();
 
   async function SignUp(e) {
     e.preventDefault(); // 기본 동작 중지
@@ -22,7 +22,9 @@ const SignUpPage = () => {
         userName: Name,
         userType: userType,
       });
-      console.log(response);
+      console.log(response.result);
+      navigate("/login");
+  
     } catch (error) {
       console.log("error");
       console.error(error);
@@ -31,10 +33,10 @@ const SignUpPage = () => {
   return (
     <s.Wrapper>
       <s.Container>
+        <s.Form onSubmit={SignUp}>
         <s.HeaderContainer>
           <s.SubmitButton type="submit">회원가입</s.SubmitButton>
         </s.HeaderContainer>
-        <s.Form onSubmit={SignUp}>
           <s.RadioContainer>
             <s.RadioLabel>소속:</s.RadioLabel>
             <s.RadioInput

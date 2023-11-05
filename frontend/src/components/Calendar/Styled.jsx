@@ -57,7 +57,7 @@ export const AddButton = styled.button`
     transition: all 0.2s ease-in-out;
     margin-top: 40px;
     &:hover {
-        background-color: #4339F2;
+        background-color: #807dbe;
         transform: scale(1.1);
     }
 
@@ -65,6 +65,7 @@ export const AddButton = styled.button`
         background-color: #4339F2;
         transform: scale(0.9);
     }
+    z-index: 10;
 `;
 
 export const AddBtnModal = styled(Modal)`
