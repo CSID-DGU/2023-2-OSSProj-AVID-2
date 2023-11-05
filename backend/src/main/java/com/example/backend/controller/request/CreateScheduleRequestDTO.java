@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 public class CreateScheduleRequestDTO {
     private String title;
-    private String write;
+    private String content;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private String scheduleType;

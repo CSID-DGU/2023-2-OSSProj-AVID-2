@@ -15,7 +15,7 @@ public class ScheduleDetailResponseDTO {
     private Long scheduleId;
     private String title;
     private String subjectName;
-    private String write;
+    private String content;
     private String schedule;
     private String taskType;
     private String scheduleType;
@@ -27,7 +27,7 @@ public class ScheduleDetailResponseDTO {
     private ScheduleDetailResponseDTO(PersonalScheduleEntity schedule){
         this.scheduleId = schedule.getId();
         this.title = schedule.getTitle();
-        this.write = schedule.getWrite();
+        this.content = schedule.getContent();
         this.schedule = PersonalScheduleEntity.class.getAnnotation(DiscriminatorValue.class).value();
         this.startDate = schedule.getStartDate();
         this.endDate = schedule.getEndDate();
@@ -42,7 +42,7 @@ public class ScheduleDetailResponseDTO {
     private ScheduleDetailResponseDTO(TaskEntity schedule){
         this.scheduleId = schedule.getId();
         this.title = schedule.getTitle();
-        this.write = schedule.getWrite();
+        this.content = schedule.getContent();
         this.schedule = TaskEntity.class.getAnnotation(DiscriminatorValue.class).value();
         this.startDate = schedule.getStartDate();
         this.taskType = schedule.getTaskType().name();
