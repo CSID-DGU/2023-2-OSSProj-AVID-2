@@ -10,18 +10,32 @@ import com.example.backend.exception.Exception;
 import com.example.backend.model.UserType;
 import com.example.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder encoder;
 
+    @Override
+    public UserDetails loadUserByUsername(String userID) throws UsernameNotFoundException {
+        UserEntity userentity = userRepository.findByUserID(userID)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with userID: " + userID));
+
+        return new User(userID, userentity.getUserPwd(), Collections.singleton(new SimpleGrantedAuthority("USER")));
+    }
     public UserJoinResponseDTO join(UserJoinRequestDTO requestDTO) {
         userRepository.findByUserID(requestDTO.getUserID())
                 .ifPresent(user -> {
@@ -49,6 +63,7 @@ public class UserService {
         if(!encoder.matches(userPwd, user.getUserPwd())) {
             throw new Exception (ErrorCode.INVALID_LOGIN);
         }
+
 
         return new UserLoginResponseDTO(user.getUserName(), user.getUserID(), user.getUserType().name());
     }

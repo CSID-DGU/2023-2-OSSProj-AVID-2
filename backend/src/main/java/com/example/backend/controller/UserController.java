@@ -10,15 +10,10 @@ import com.example.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true") // 클라이언트의 주소로 변경
 public class UserController {
 
     @Autowired
@@ -30,11 +25,13 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Response<UserLoginResponseDTO> login(@RequestBody UserLoginRequestDTO requestDTO) {
-        return Response.success(userService.login(requestDTO.getUserID(), requestDTO.getUserPwd()));
+    public UserLoginResponseDTO login(@RequestBody UserLoginRequestDTO requestDTO) {
 
+        // UserLoginResponseDTO를 사용하여 응답 생성
+        UserLoginResponseDTO responseDTO = userService.login(requestDTO.getUserID(), requestDTO.getUserPwd());
+
+        return responseDTO;
     }
-
     @GetMapping("/home")
     public Response<UserHomeResponseDTO> home(Authentication authentication) {
         return Response.success(userService.getHome(authentication.name()));
