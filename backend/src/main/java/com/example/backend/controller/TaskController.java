@@ -21,20 +21,10 @@ public class TaskController {
 
     @PostMapping("")
     public Response<Void> createTask(@RequestBody TaskRequestDTO requestDTO){
-        String userID = "2019111598";
+
+        String userID = "2019111602";
         scheduleService.writeTask(requestDTO, userID);
-        return Response.success();
-    }
 
-    @PutMapping("/{scheduleId}")
-    public Response<Void> modifyTask(@RequestBody TaskRequestDTO requestDTO, @PathVariable Long scheduleId, Authentication authentication){
-        scheduleService.modifyTask(requestDTO, scheduleId,authentication.getName());
-        return Response.success();
-    }
-
-    @DeleteMapping("/{scheduleId}")
-    public Response<Void> deleteTask(@PathVariable Long scheduleId,Authentication authentication){
-        scheduleService.deleteTask(scheduleId,authentication.getName());
         return Response.success();
     }
 

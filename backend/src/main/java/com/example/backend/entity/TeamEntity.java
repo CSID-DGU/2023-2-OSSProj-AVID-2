@@ -6,14 +6,18 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "team")
 @NoArgsConstructor
-@Table(name = "subject")
 @Getter
-public class SubjectEntity {
+public class TeamEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String teamName;
+    // 팀원 다중속성으로
 
-    private String subjectName;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "subject_id")
+    private SubjectEntity subject;
 }
