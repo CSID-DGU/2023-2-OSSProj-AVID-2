@@ -39,4 +39,6 @@ public class TaskEntity extends ScheduleEntity {
     public static TaskEntity fromTaskDTO(TaskRequestDTO requestDTO, SubjectEntity subject, UserEntity user){
         return new TaskEntity(requestDTO, subject, user);
     }
+
+
 }
