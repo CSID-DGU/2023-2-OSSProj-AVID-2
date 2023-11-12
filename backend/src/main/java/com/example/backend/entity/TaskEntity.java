@@ -39,16 +39,4 @@ public class TaskEntity extends ScheduleEntity {
     public static TaskEntity fromTaskDTO(TaskRequestDTO requestDTO, SubjectEntity subject, UserEntity user){
         return new TaskEntity(requestDTO, subject, user);
     }
-
-    public void modifySchedule(TaskRequestDTO requestDTO) {
-        this.title = requestDTO.getTitle();
-        this.startMonth = requestDTO.getStartDate().getMonth();
-        this.endMonth = requestDTO.getEndDate().getMonth();
-        this.content = requestDTO.getContent();
-        this.startDate = requestDTO.getStartDate();
-        this.endDate = requestDTO.getEndDate();
-        this.taskType = TaskType.returnType(requestDTO.getTaskType());
-        this.startYear = requestDTO.getStartDate().getYear();
-        this.endYear = requestDTO.getEndDate().getYear();
-    }
 }
