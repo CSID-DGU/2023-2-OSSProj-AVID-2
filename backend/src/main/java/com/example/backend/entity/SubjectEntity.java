@@ -16,4 +16,5 @@ public class SubjectEntity {
     private Long id;
 
     private String subjectName;
+    private String professor;
 }
