@@ -16,19 +16,19 @@ import java.time.YearMonth;
 
 // 개인 스케쥴 관련 api
 @RestController
-@RequestMapping("/schedule")
+@RequestMapping("/api/schedule/personal")
 @RequiredArgsConstructor
 public class PersonalScheduleController {
     private final ScheduleService scheduleService;
 
-    @PostMapping("/personal")
+    @PostMapping("")
     public Response<Void> createSchedule(@RequestBody CreateScheduleRequestDTO requestDTO){
         String userID = "2019111598";
         scheduleService.createPersonalSchedule(requestDTO, userID);
         return Response.success();
     }
 
-    @GetMapping("/personal")
+    @GetMapping("")
     public Response<ScheduleResponseDTO> getSchedule(@RequestParam("month") @DateTimeFormat(pattern = "yyyy-MM") YearMonth yearMonth , Authentication authentication){
         Month month = yearMonth.getMonth();
         int year = yearMonth.getYear();
@@ -40,13 +40,13 @@ public class PersonalScheduleController {
         return Response.success(scheduleService.getScheduleDetail(authentication.getName(), scheduleId));
     }
 
-    @DeleteMapping("/personal/{scheduleId}")
+    @DeleteMapping("/{scheduleId}")
     public Response<Void> deleteSchedule(@PathVariable Long scheduleId, Authentication authentication){
         scheduleService.deletePersonalSchedule(scheduleId, authentication.getName());
         return Response.success();
     }
 
-    @PutMapping("/personal/{scheduleId}")
+    @PutMapping("/{scheduleId}")
     public Response<Void> modifySchedule(@PathVariable Long scheduleId, Authentication authentication, @RequestBody ModifyScheduleRequestDTO requestDTO){
         scheduleService.modifyPersonalSchedule(scheduleId, authentication.getName(), requestDTO);
         return Response.success();

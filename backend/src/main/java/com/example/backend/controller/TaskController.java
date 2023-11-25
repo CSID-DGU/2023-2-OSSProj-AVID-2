@@ -14,7 +14,7 @@ import java.util.List;
 
 // 과제 일정 api
 @RestController
-@RequestMapping("/schedule/task")
+@RequestMapping("/api/schedule/task")
 @RequiredArgsConstructor
 public class TaskController {
     private final ScheduleService scheduleService;
