@@ -1,33 +1,33 @@
 package com.example.backend.service;
 
-import com.example.backend.entity.SubjectEntity;
-import com.example.backend.entity.TeamEntity;
-import com.example.backend.entity.UserSubjectEntity;
-import com.example.backend.entity.UserTeamEntity;
+import com.example.backend.entity.*;
+import com.example.backend.exception.ErrorCode;
+import com.example.backend.repository.TeamRepository;
+import com.example.backend.repository.UserRepository;
 import com.example.backend.repository.UserSubjectRepository;
 import com.example.backend.repository.UserTeamRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-// 팀 생성 폼에서 username(외래키 subject_id 마다) 리스트로 받아와서 띄우기
-// 팀 생성
-// 팀 메모 기능: 이거는 약간 투두처럼 아니면 게시판?
+import static com.example.backend.exception.ErrorCode.USER_NOT_FOUND;
+
 @Service
 @RequiredArgsConstructor
 public class TeamService {
-    private UserSubjectRepository userSubjectRepository;
+
+    @Autowired
     private UserTeamRepository userTeamRepository;
 
-    // 각 과목을 수강하는 userName 반환
-    public List<String> getUsersBySubject(SubjectEntity subject) {
-        List<UserSubjectEntity> userSubjectEntityList = userSubjectRepository.findAllBySubject(subject);
+    @Autowired
+    private UserSubjectRepository userSubjectRepository;
 
-        return userSubjectEntityList.stream()
-                .map(userSubjectEntity -> userSubjectEntity.getUser().getUserName())
-                .collect(Collectors.toList());
+    // 각 과목을 수강하는 userName 반환
+    public List<String> getUserNamesBySubjectId(Long subjectId) {
+        return userSubjectRepository.findUserNamesBySubjectId(subjectId);
     }
 
     // 각 team_id를 가지는 userName 반환
@@ -37,5 +37,15 @@ public class TeamService {
         return userTeamEntityList.stream()
                 .map(userTeamEntity -> userTeamEntity.getUser().getUserName())
                 .collect(Collectors.toList());
+    }
+
+    // user_id에 해당하는 team의 subject_id로부터 subjectName을 가져오는 메소드
+    public String getSubjectNameByUserId(Long userId) {
+        return userTeamRepository.findSubjectNameByUserId(userId);
+    }
+
+    // team_id에 해당하는 user_id로부터 userID, userName, userMajor를 가져오는 메소드
+    public List<String> getUserInfoByTeamId(Long teamId) {
+        return userTeamRepository.findUserInfoByTeamId(teamId);
     }
 }
