@@ -10,5 +10,6 @@ public class UserJoinRequestDTO {
     private String userID;
     private String userName;
     private String userPwd;
+    private String userMajor;
     private String userType;
 }

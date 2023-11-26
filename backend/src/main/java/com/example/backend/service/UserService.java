@@ -46,6 +46,7 @@ public class UserService implements UserDetailsService {
                 requestDTO.getUserID(),
                 encoder.encode(requestDTO.getUserPwd()),
                 requestDTO.getUserName(),
+                requestDTO.getUserMajor(),
                 UserType.returnUserType(requestDTO.getUserType()));
 
         UserJoinResponseDTO result;

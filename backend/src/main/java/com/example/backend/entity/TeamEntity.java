@@ -18,18 +18,8 @@ public class TeamEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String teamName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_id")
     private SubjectEntity subject;
-
-    @Builder
-    public TeamEntity(String teamName) {
-        this.teamName = teamName;
-    }
-
-    public static TeamEntity save(String teamName) {
-        return new TeamEntity(teamName);
-    }
 }
