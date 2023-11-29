@@ -11,8 +11,38 @@ const SignUpPage = () => {
   const [passwordCheck, setPasswordCheck] = useState("");
   const navigate = useNavigate();
 
+  const [major, setMajor] = useState("");
+  const majorOptions = [
+    "과학수사",
+    "그래픽커뮤니케이션사이언스",
+    "데이터사이언스소프트웨어",
+    "문화공학",
+    "문화예술소프트웨어",
+    "문화학",
+    "범죄수사소프트웨어",
+    "생명정보소프트웨어",
+    "서베이리서치",
+    "예술융복합",
+    "융합소프트웨어"
+  ];
+
+  const handleMajorChange = (e) => {
+    setMajor(e.target.value);
+  };
+
+
   async function SignUp(e) {
     e.preventDefault(); // 기본 동작 중지
+    // 입력 필드 중 하나라도 비어있으면 alert 띄우기
+    if (!Name || !userType || !studentId || !password || !passwordCheck || !major) {
+      alert("모든 항목을 입력하세요.");
+      return;
+    }
+    if(password !== passwordCheck) {
+      alert("비밀번호가 일치하지 않습니다.");
+      return;
+    }
+    
     try {
       // POST 요청 코드
       const response = await API.post("/signup", {
@@ -102,6 +132,17 @@ const SignUpPage = () => {
               value={passwordCheck}
               onChange={(e) => setPasswordCheck(e.target.value)}
             />
+          </s.InputContainer>
+          <s.InputContainer>
+            <s.Label htmlFor="major">전공:</s.Label>
+            <s.SelectBox id="major" value={major} onChange={handleMajorChange}>
+              <option value="">전공을 선택하세요</option>
+              {majorOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </s.SelectBox>
           </s.InputContainer>
         </s.Form>
       </s.Container>
