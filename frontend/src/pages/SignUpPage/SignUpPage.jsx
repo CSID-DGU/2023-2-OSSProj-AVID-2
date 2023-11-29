@@ -42,7 +42,7 @@ const SignUpPage = () => {
       alert("비밀번호가 일치하지 않습니다.");
       return;
     }
-    
+
     try {
       // POST 요청 코드
       const response = await API.post("/signup", {
@@ -51,6 +51,7 @@ const SignUpPage = () => {
         userPwd: password,
         userName: Name,
         userType: userType,
+        userMajor: major
       });
       console.log(response.result);
       navigate("/login");
