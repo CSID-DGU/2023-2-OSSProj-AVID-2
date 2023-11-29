@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "task")
+@Table(name = "subject_schedule")
 @NoArgsConstructor
 @Getter
 @DiscriminatorValue("TASK")
