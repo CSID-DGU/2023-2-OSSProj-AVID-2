@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface UserTeamRepository extends JpaRepository<UserTeamEntity, Long> {
     List<UserTeamEntity> findAllByTeam(TeamEntity team);
+    List<UserTeamEntity> findByTeam(TeamEntity team);
 
     @Query("SELECT t.team.subject.subjectName FROM UserTeamEntity t WHERE t.user.id = :userId")
     String findSubjectNameByUserId(@Param("userId") Long userId);

@@ -30,7 +30,7 @@ public class UserTaskEntity {
         this.user = schedule.getUser();
     }
 
-    public static UserTaskEntity newAssignmentFromOfficial(UserEntity listener, TaskEntity schedule) {
+    public static UserTaskEntity newAssignmentFromTask(UserEntity listener, TaskEntity schedule) {
         return new UserTaskEntity(listener, schedule);
     }
 }

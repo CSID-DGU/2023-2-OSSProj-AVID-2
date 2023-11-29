@@ -1,13 +1,10 @@
 package com.example.backend.entity;
 
-import com.example.backend.controller.request.TeamRequestDTO;
-import com.example.backend.model.UserType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "team")
@@ -22,4 +19,13 @@ public class TeamEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_id")
     private SubjectEntity subject;
+
+    @Builder
+    public TeamEntity(SubjectEntity subject) {
+        this.subject = subject;
+    }
+
+    public static TeamEntity save(SubjectEntity subject) {
+        return new TeamEntity(subject);
+    }
 }
