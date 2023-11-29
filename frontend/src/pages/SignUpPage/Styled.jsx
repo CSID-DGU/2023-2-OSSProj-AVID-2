@@ -106,3 +106,15 @@ export const RadioInput = styled.input`
     box-shadow: 0 0 0 1.6px #1e91fcf8;
   }
 `;
+
+export const SelectBox = styled.select`
+  width: 100%;
+  height: 40px;
+  border: 1px solid #cdcdcd;
+  border-radius: 5px;
+  background-color: #e2e1e1;
+  color: grey;
+  font-size: 1.2rem;
+  padding: 10px;
+  margin-top: 15px;
+`;
