@@ -52,3 +52,52 @@ export const SignupBtnContainer = styled.button`
   border-radius: 2px;
   background: #e72f4b;
 `;
+
+
+export const MyPageBtnContainer = styled.button`
+  position: relative;
+  left: 10px;
+  width: 100px;
+
+  font: Noto Sans KR;
+  display: block;
+  font-size: 14px;
+  text-align: center;
+  color: #fff;
+  padding: 8px 8px;
+
+  border-radius: 2px;
+  background: #e72f4b;
+`;
+
+export const LogoutBtnContainer = styled.button`
+  position: relative;
+  left: 20px;
+  width: 100px;
+
+  font: Noto Sans KR;
+  display: block;
+  font-size: 14px;
+  text-align: center;
+  color: #fff;
+  padding: 8px 16px;
+
+  border-radius: 2px;
+  background: #e72f4b;
+`;  
+
+export const UserInfo = styled.div`
+  position: relative;
+
+  width: 130px;
+
+  font: Noto Sans KR;
+  display: block;
+  font-size: 14px;
+  text-align: left;
+  color: #000;
+  padding: 8px 8px;
+
+  border-radius: 2px;
+  background: #fff;
+`;
