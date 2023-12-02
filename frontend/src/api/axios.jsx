@@ -8,20 +8,20 @@ export const API = axios.create({
   withCredentials: true
 });
 
-API.interceptors.request.use(
-  (config) => {
-    const sessionId = localStorage.getItem("sessionId");
-    if (sessionId) {
-      config.headers.Authorization = `Bearer ${sessionId}`;
-    }
-    return config;
-  },
-  (error) => {
-    console.error(error);
+// API.interceptors.request.use(
+//   (config) => {
+//     const sessionId = localStorage.getItem("sessionId");
+//     if (sessionId) {
+//       config.headers.Authorization = `Bearer ${sessionId}`;
+//     }
+//     return config;
+//   },
+//   (error) => {
+//     console.error(error);
     
-    return Promise.reject(error);
-  }
-);
+//     return Promise.reject(error);
+//   }
+// );
 
 
 export default API;
