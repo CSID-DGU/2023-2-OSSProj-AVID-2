@@ -11,15 +11,13 @@ export default function Nav() {
     const checkLoginStatus = async () => {
       try {
         const response = await API.get("/home");
-        
+
         if (response.data.resultCode === "SUCCESS") {
           setIsLoggedIn(true);
           setUserInfo(response.data.result);
-          
         } else {
           setIsLoggedIn(false);
         }
-
       } catch (error) {
         console.error("Error checking login status:", error);
       }
@@ -27,7 +25,7 @@ export default function Nav() {
 
     checkLoginStatus();
   }, []);
-  
+
   return (
     <s.Container>
       <Link to="/">
@@ -36,28 +34,29 @@ export default function Nav() {
 
       {isLoggedIn ? (
         <>
-          <s.UserInfo>
+          <s.User>
             {userInfo.userName}({userInfo.userID})님
-          </s.UserInfo>
-          <Link to="/mypage">
-            <s.MyPageBtnContainer>마이페이지</s.MyPageBtnContainer>
-          </Link>
+          </s.User>
+
           <Link to="/logout">
             <s.LogoutBtnContainer>로그아웃</s.LogoutBtnContainer>
           </Link>
+          <s.LoginedBtn> 대표권한설정</s.LoginedBtn>
+          <s.LoginedBtn>Webex 비밀번호 변경</s.LoginedBtn>
+          <s.LectureBtn>강의실 선택</s.LectureBtn>
+          <s.Language>HOME | ENG | CHN | JPN </s.Language>
         </>
       ) : (
         <>
-      <Link to="/login">
-        <s.LoginBtnContainer>로그인</s.LoginBtnContainer>
-      </Link>
+          <Link to="/login">
+            <s.LoginBtnContainer>로그인</s.LoginBtnContainer>
+          </Link>
 
-      <Link to="/signup">
-        <s.SignupBtnContainer>회원가입</s.SignupBtnContainer>
-      </Link>
-
-    </>
+          <Link to="/signup">
+            <s.SignupBtnContainer>회원가입</s.SignupBtnContainer>
+          </Link>
+        </>
       )}
-  </s.Container>
+    </s.Container>
   );
 }
