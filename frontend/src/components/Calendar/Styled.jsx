@@ -40,7 +40,6 @@ export const ListItemContainer = styled.div`
   height: 40px;
   margin-top: 10px;
   background-color: ${({ value }) => {
-    // Use a function to dynamically set the background color based on the value
     switch (value) {
       case "과제":
         return "#6d66b7";
@@ -49,7 +48,7 @@ export const ListItemContainer = styled.div`
       case "팀플":
         return "#14148e";
       default:
-        return "#E39A29"; // Default color if the value doesn't match any case
+        return "#E39A29";
     }
   }};
   border-radius: 8px;
@@ -102,29 +101,19 @@ export const CalendarContainer = styled.div`
 //AddBtn.jsx
 export const AddBtnContainer = styled.div`
   width: 1000px;
-  height: 100px;
+  height: 500px;
   margin-left: 15%;
   position: relative;
   background: white;
-`;
-
-export const ModalTitleLabel = styled.div`
-  width: 200px;
-  font-size: 50px;
   font-family: "DM Sans";
+  font-size: 35px;
   font-weight: 500;
-  margin-left: 40px;
-  color: rgba(0, 0, 0, 0.5);
-  word-wrap: break-word;
 `;
 
-export const ModalContentLabel = styled.div`
+export const ModalLabel = styled.div`
   width: 200px;
   height: 55px;
-  margin-left: 40px;
-  font-size: 35px;
-  font-family: "DM Sans";
-  font-weight: 500;
+  margin-left: 15px;
   color: rgba(0, 0, 0, 0.5);
   word-wrap: break-word;
 `;
@@ -195,7 +184,7 @@ export const FlexContainer = styled.div`
   display: flex;
   align-items: center;
   margin-left: 40px;
-  margin-top: 5px;
+  margin-top: 20px;
 `;
 
 export const Input = styled.input`
