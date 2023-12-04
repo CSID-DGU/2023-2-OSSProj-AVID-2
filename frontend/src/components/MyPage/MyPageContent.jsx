@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Calendar from "../Calendar/Calendar";
 import Notice from "./Notice";
 import styled from "styled-components";
@@ -17,7 +18,6 @@ const Pagemode = styled.button`
   background: #a54d1f;
   font-size: 20px;
   font-weight: 400;
-  font-familiy: DMSans;
   color: #ffffff;
 `;
 const PagemodeSel = styled.button`
@@ -28,14 +28,15 @@ const PagemodeSel = styled.button`
   background: #ffe5d3;
   font-size: 20px;
   font-weight: 400;
-  font-familiy: DMSans;
   color: #a54d1f;
 `;
 const MyPage = () => {
   return (
     <WrapperContainer>
       <Pagemode>개인</Pagemode>
-      <PagemodeSel>팀 활동</PagemodeSel>
+      <PagemodeSel>
+        <Link to="/teampage">팀 활동</Link>
+      </PagemodeSel>
       <AddBtn />
       <Calendar />
       <Notice />

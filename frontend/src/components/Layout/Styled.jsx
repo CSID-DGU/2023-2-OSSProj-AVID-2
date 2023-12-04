@@ -53,7 +53,6 @@ export const SignupBtnContainer = styled.button`
   background: #e72f4b;
 `;
 
-
 export const MyPageBtnContainer = styled.button`
   position: relative;
   left: 10px;
@@ -84,20 +83,68 @@ export const LogoutBtnContainer = styled.button`
 
   border-radius: 2px;
   background: #e72f4b;
-`;  
+`;
 
-export const UserInfo = styled.div`
+export const User = styled.text`
   position: relative;
+  color: grey;
+  font-size: 20px;
+`;
 
-  width: 130px;
+export const Language = styled.text`
+  margin-left: 150px;
+  color: var(--colors-black-100, #000);
+  font-family: DM Sans;
+  font-size: 22px;
+  font-style: bold;
+  font-weight: 400;
+  opacity: 0.4;
+`;
+
+export const LoginedBtn = styled.button`
+  position: relative;
+  /* left: 230px; */
+
+  margin-left: 20px;
 
   font: Noto Sans KR;
   display: block;
-  font-size: 14px;
-  text-align: left;
-  color: #000;
-  padding: 8px 8px;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  color: #fff;
+  padding: 4px 8px;
 
   border-radius: 2px;
-  background: #fff;
+  background: #662784;
+`;
+
+export const LectureBtn = styled.button`
+  position: relative;
+  /* left: 230px; */
+
+  margin-left: 20px;
+
+  font: Noto Sans KR;
+  display: block;
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center;
+  color: #8b6666;
+  padding: 4px 8px;
+
+  border-radius: 15px;
+  background: #dad7fe;
+`;
+export const Input = styled.input`
+  flex: 1;
+  font-size: 1.2rem;
+  padding: 20px;
+  border-radius: 0.5rem;
+  border: 0.125rem solid white;
+  width: 100%;
+  background-color: #e2e1e1;
+  box-sizing: border-box;
+  color: grey;
+  height: 20px;
 `;
