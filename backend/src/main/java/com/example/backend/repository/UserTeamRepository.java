@@ -1,6 +1,7 @@
 package com.example.backend.repository;
 
 import com.example.backend.entity.TeamEntity;
+import com.example.backend.entity.UserEntity;
 import com.example.backend.entity.UserTeamEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,4 +18,6 @@ public interface UserTeamRepository extends JpaRepository<UserTeamEntity, Long> 
 
     @Query("SELECT CONCAT(u.userID, ', ', u.userName, ', ', u.userMajor) FROM UserTeamEntity t JOIN t.user u WHERE t.team.id = :teamId")
     List<String> findUserInfoByTeamId(@Param("teamId") Long teamId);
+
+    boolean existsByUserAndTeam(UserEntity user, Long subjectId);
 }
