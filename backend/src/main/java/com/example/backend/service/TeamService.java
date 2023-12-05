@@ -27,6 +27,11 @@ public class TeamService {
 
     private final UserRepository userRepository;
 
+    // 유저가 수강하는 과목 반환
+    public List<String> getSubjectByUserId(Long userId) {
+        return userSubjectRepository.findSubjectByUserId(userId);
+    }
+
     // 각 과목을 수강하는 userName 반환
     public List<String> getUserNamesBySubjectId(Long subjectId) {
         return userSubjectRepository.findUserNamesBySubjectId(subjectId);
@@ -52,18 +57,21 @@ public class TeamService {
     }
 
     // 팀원 추가
-    public void addUserToTeam(Long userId, Long teamId) throws NotFoundException {
+    public void addUserToTeam(Long userId, Long teamId, Long subjectId) throws NotFoundException {
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("유저를 찾을 수 없습니다. ID: " + userId));
 
         TeamEntity team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new NotFoundException("팀을 찾을 수 없습니다. ID: " + teamId));
 
-        UserTeamEntity userTeam = UserTeamEntity.builder()
-                .user(user)
-                .team(team)
-                .build();
+        // 팀에 유저가 이미 존재하는지 확인
+        if (!userTeamRepository.existsByUserAndTeam(user, subjectId)) {
+            UserTeamEntity userTeam = UserTeamEntity.builder()
+                    .user(user)
+                    .team(team)
+                    .build();
 
-        userTeamRepository.save(userTeam);
+            userTeamRepository.save(userTeam);
+        }
     }
 }

@@ -21,6 +21,9 @@ public class ScheduleEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     protected UserEntity user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id")
+    protected TeamEntity team;
     protected String content;
     protected LocalDateTime startDate;
     protected LocalDateTime endDate;

@@ -1,7 +1,7 @@
 package com.example.backend.controller.response;
 
 import com.example.backend.entity.PersonalScheduleEntity;
-import com.example.backend.entity.TaskEntity;
+import com.example.backend.entity.TeamScheduleEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +23,7 @@ public class ScheduleDetailResponseDTO {
     private LocalDateTime endDate;
     private int dDay;
 
+    // 개인 스케줄 디테일
     @Builder
     private ScheduleDetailResponseDTO(PersonalScheduleEntity schedule){
         this.scheduleId = schedule.getId();
@@ -38,20 +39,18 @@ public class ScheduleDetailResponseDTO {
         return new ScheduleDetailResponseDTO(schedule);
     }
 
+    // 팀 스케줄 디테일
     @Builder
-    private ScheduleDetailResponseDTO(TaskEntity schedule){
+    private ScheduleDetailResponseDTO(TeamScheduleEntity schedule){
         this.scheduleId = schedule.getId();
         this.title = schedule.getTitle();
         this.content = schedule.getContent();
-        this.schedule = TaskEntity.class.getAnnotation(DiscriminatorValue.class).value();
+        this.schedule = TeamScheduleEntity.class.getAnnotation(DiscriminatorValue.class).value();
         this.startDate = schedule.getStartDate();
-        this.taskType = schedule.getTaskType().name();
-        this.subjectName = schedule.getSubject().getSubjectName();
         this.endDate = schedule.getEndDate();
         this.dDay = LocalDateTime.now().getDayOfYear() - schedule.getEndDate().getDayOfYear();
     }
-
-    public static ScheduleDetailResponseDTO fromTask(TaskEntity schedule){
+    public static ScheduleDetailResponseDTO fromTeamSchedule(TeamScheduleEntity schedule) {
         return new ScheduleDetailResponseDTO(schedule);
     }
 }
