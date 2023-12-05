@@ -72,14 +72,14 @@ public class ScheduleService {
     // 개인 일정 생성, 수정, 삭제
     public void createPersonalSchedule(CreateScheduleRequestDTO requestDTO, String userID) {
         UserEntity user = userRepository.findByUserID(userID)
-                .orElseThrow(() -> new Exception(ErrorCode.USER_NOT_FOUND, String.format("%s 학번을 가진 유자가 없습니다.", userID)));
+                .orElseThrow(() -> new Exception(ErrorCode.USER_NOT_FOUND, String.format("%s 학번을 가진 유저가 없습니다.", userID)));
         PersonalScheduleEntity schedule = PersonalScheduleEntity.fromPersonalScheduleDTO(requestDTO, user);
         personalScheduleRepository.save(schedule);
     }
 
     public void deletePersonalSchedule(Long scheduleId, String userID) {
         UserEntity user = userRepository.findByUserID(userID)
-                .orElseThrow(() -> new Exception(ErrorCode.USER_NOT_FOUND, String.format("%s 학번을 가진 유자가 없습니다.", userID)));
+                .orElseThrow(() -> new Exception(ErrorCode.USER_NOT_FOUND, String.format("%s 학번을 가진 유저가 없습니다.", userID)));
         PersonalScheduleEntity schedule = personalScheduleRepository.findByIdAndUser(scheduleId, user)
                 .orElseThrow(() -> new Exception(ErrorCode.SCHEDULE_NOT_FOUND, String.format("%s 유저가 작성한 %d 일정을 찾을 수 없습니다.", userID, scheduleId)));
         personalScheduleRepository.delete(schedule);
@@ -87,7 +87,7 @@ public class ScheduleService {
 
     public void modifyPersonalSchedule(Long scheduleId, String userID, ModifyScheduleRequestDTO requestDTO) {
         UserEntity user = userRepository.findByUserID(userID)
-                .orElseThrow(() -> new Exception(ErrorCode.USER_NOT_FOUND, String.format("%s 학번을 가진 유자가 없습니다.", userID)));
+                .orElseThrow(() -> new Exception(ErrorCode.USER_NOT_FOUND, String.format("%s 학번을 가진 유저가 없습니다.", userID)));
         PersonalScheduleEntity personalSchedule = personalScheduleRepository.findByIdAndUser(scheduleId, user)
                 .orElseThrow(() -> new Exception(ErrorCode.SCHEDULE_NOT_FOUND, String.format("%s 유저가 작성한 %d 일정을 찾을 수 없습니다.", userID, scheduleId)));
         personalSchedule.modifySchedule(requestDTO);
@@ -95,7 +95,7 @@ public class ScheduleService {
 
     public ScheduleDetailResponseDTO getScheduleDetail(String userID, Long scheduleId) {
         UserEntity user = userRepository.findByUserID(userID)
-                .orElseThrow(() -> new Exception(ErrorCode.USER_NOT_FOUND, String.format("%s 학번을 가진 유자가 없습니다.", userID)));
+                .orElseThrow(() -> new Exception(ErrorCode.USER_NOT_FOUND, String.format("%s 학번을 가진 유저가 없습니다.", userID)));
         ScheduleEntity schedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new Exception(ErrorCode.SCHEDULE_NOT_FOUND));
         return ScheduleDetailResponseDTO.fromPersonalSchedule((PersonalScheduleEntity) schedule);
@@ -123,7 +123,7 @@ public class ScheduleService {
 
     public List<EclassResponseDTO> getTask(String userID, String subjectName) {
         UserEntity user = userRepository.findByUserID(userID)
-                .orElseThrow(() -> new Exception(ErrorCode.USER_NOT_FOUND, String.format("%s 학번을 가진 유자가 없습니다.", userID)));
+                .orElseThrow(() -> new Exception(ErrorCode.USER_NOT_FOUND, String.format("%s 학번을 가진 유저가 없습니다.", userID)));
         SubjectEntity subject = subjectRepository.findBySubjectName(subjectName)
                 .orElseThrow(() -> new Exception(ErrorCode.SUBJECT_NOT_FOUND));
         UserSubjectEntity userSubject = userSubjectRepository.findByUserAndSubject(user, subject)
@@ -137,7 +137,7 @@ public class ScheduleService {
 
     public TaskDetailResponseDTO getTaskDetail(String userID, Long scheduleId) {
         UserEntity user = userRepository.findByUserID(userID)
-                .orElseThrow(() -> new Exception(ErrorCode.USER_NOT_FOUND, String.format("%s 학번을 가진 유자가 없습니다.", userID)));
+                .orElseThrow(() -> new Exception(ErrorCode.USER_NOT_FOUND, String.format("%s 학번을 가진 유저가 없습니다.", userID)));
         TaskEntity schedule = taskRepository.findById(scheduleId)
                 .orElseThrow(() -> new Exception(ErrorCode.SCHEDULE_NOT_FOUND));
         return TaskDetailResponseDTO.taskResponseDTO(schedule);
