@@ -27,11 +27,9 @@ export const HeaderContainer = styled.div`
   align-items: center;
 `;
 
-
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  
 `;
 
 export const InputContainer = styled.div`
@@ -51,9 +49,9 @@ export const Label = styled.label`
 
 export const Input = styled.input`
   flex: 1;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   padding: 20px;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   border: 0.125rem solid white;
   width: 100%;
   background-color: #e2e1e1;
@@ -66,11 +64,12 @@ export const SubmitButton = styled.button`
   padding: 10px;
   border-radius: 5px;
   width: 100%;
-  background-color: orange;
+  background-color: #4caf50;
   color: white;
   border: 1px solid #cdcdcd;
   cursor: pointer;
   font-weight: bold;
+  font-size: 1.2rem;
 `;
 
 export const RadioContainer = styled.div`
@@ -92,7 +91,7 @@ export const RadioInput = styled.input`
   width: 2.5rem;
   height: 2.5rem;
   -webkit-appearance: none; // 웹킷 브라우저에서 기본 스타일 제거
-  -moz-appearance: none; // 모질라 브라우저에서 기본 스타일 제거 
+  -moz-appearance: none; // 모질라 브라우저에서 기본 스타일 제거
   appearance: none; // 기본 브라우저에서 기본 스타일 제거
   width: 18px;
   height: 18px;
@@ -114,7 +113,7 @@ export const SelectBox = styled.select`
   border-radius: 5px;
   background-color: #e2e1e1;
   color: grey;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   padding: 10px;
   margin-top: 15px;
 `;

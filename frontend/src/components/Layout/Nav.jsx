@@ -39,7 +39,7 @@ export default function Nav() {
           </s.User>
 
           <Link to="/logout">
-            <s.LogoutBtnContainer>로그아웃</s.LogoutBtnContainer>
+            <s.LoginedBtn>로그아웃</s.LoginedBtn>
           </Link>
           <s.LoginedBtn> 대표권한설정</s.LoginedBtn>
           <s.LoginedBtn>Webex 비밀번호 변경</s.LoginedBtn>

@@ -23,22 +23,28 @@ const SignUpPage = () => {
     "생명정보소프트웨어",
     "서베이리서치",
     "예술융복합",
-    "융합소프트웨어"
+    "융합소프트웨어",
   ];
 
   const handleMajorChange = (e) => {
     setMajor(e.target.value);
   };
 
-
   async function SignUp(e) {
     e.preventDefault(); // 기본 동작 중지
     // 입력 필드 중 하나라도 비어있으면 alert 띄우기
-    if (!Name || !userType || !studentId || !password || !passwordCheck || !major) {
+    if (
+      !Name ||
+      !userType ||
+      !studentId ||
+      !password ||
+      !passwordCheck ||
+      !major
+    ) {
       alert("모든 항목을 입력하세요.");
       return;
     }
-    if(password !== passwordCheck) {
+    if (password !== passwordCheck) {
       alert("비밀번호가 일치하지 않습니다.");
       return;
     }
@@ -51,11 +57,10 @@ const SignUpPage = () => {
         userPwd: password,
         userName: Name,
         userType: userType,
-        userMajor: major
+        userMajor: major,
       });
       console.log(response.result);
       navigate("/login");
-  
     } catch (error) {
       console.log("error");
       console.error(error);
@@ -65,9 +70,9 @@ const SignUpPage = () => {
     <s.Wrapper>
       <s.Container>
         <s.Form onSubmit={SignUp}>
-        <s.HeaderContainer>
-          <s.SubmitButton type="submit">회원가입</s.SubmitButton>
-        </s.HeaderContainer>
+          <s.HeaderContainer>
+            <s.SubmitButton type="submit">회원가입</s.SubmitButton>
+          </s.HeaderContainer>
           <s.RadioContainer>
             <s.RadioLabel>소속:</s.RadioLabel>
             <s.RadioInput

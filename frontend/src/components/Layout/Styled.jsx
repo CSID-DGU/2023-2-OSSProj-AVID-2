@@ -82,7 +82,7 @@ export const LogoutBtnContainer = styled.button`
   padding: 8px 16px;
 
   border-radius: 2px;
-  background: #e72f4b;
+  background: #286090;
 `;
 
 export const User = styled.text`
@@ -116,7 +116,7 @@ export const LoginedBtn = styled.button`
   padding: 4px 8px;
 
   border-radius: 2px;
-  background: #662784;
+  background: #286090;
 `;
 
 export const LectureBtn = styled.button`

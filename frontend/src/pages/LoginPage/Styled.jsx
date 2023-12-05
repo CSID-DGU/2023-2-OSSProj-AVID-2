@@ -5,7 +5,8 @@ export const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin: 0;
+  justify-content: center;
+  height: 100vh;
 `;
 
 export const Form = styled.form`
@@ -39,4 +40,22 @@ export const SubmitButton = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
+`;
+
+export const LoginFormContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+`;
+
+export const Logo = styled.img`
+  max-width: 300px;
+  max-height: 300px;
+  margin-left: 20px;
 `;
