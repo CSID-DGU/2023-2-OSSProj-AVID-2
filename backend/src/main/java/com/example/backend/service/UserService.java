@@ -82,7 +82,7 @@ public class UserService implements UserDetailsService {
                 .findByUserID(userID)
                 .orElseThrow(()-> new Exception(ErrorCode.INVALID_LOGIN));
 
-        return new UserHomeResponseDTO(user.getUserName(), user.getUserID(), user.getUserType().name());
+        return new UserHomeResponseDTO(user.getUserID(), user.getUserName(), user.getUserType().name());
     }
 
     public UserSubjectResponseDTO setSubjects(UserSubjectRequestDTO requestDTO) {
