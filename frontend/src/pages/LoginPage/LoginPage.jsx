@@ -37,7 +37,7 @@ const LoginPage = () => {
         console.error(error);
       }
       console.log(response);
-      navigate("/");
+      navigate("/mypage");
     } catch (error) {
       console.log("error");
       console.error(error);

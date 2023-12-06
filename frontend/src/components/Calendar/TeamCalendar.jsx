@@ -4,6 +4,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import * as s from "./Styled.jsx";
+import AddTeam from "./AddTeam.jsx";
 
 function TeamCalendar() {
   const events = [
@@ -73,6 +74,7 @@ function TeamCalendar() {
           <s.CategoryLabel>팀플</s.CategoryLabel>
           <s.EnddateLabel>23-12-25</s.EnddateLabel>
         </s.ListItemContainer>
+        <AddTeam />
       </s.ListContainer>
     </s.TeamWrapper>
   );
