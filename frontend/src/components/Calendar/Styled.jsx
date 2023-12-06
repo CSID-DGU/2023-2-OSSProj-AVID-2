@@ -64,7 +64,7 @@ export const Checkbox = styled.input`
   background-color: #ffffff;
 
   &:checked {
-    background-color: #blue;
+    background-color: #0000ff;
   }
 `;
 
@@ -102,7 +102,6 @@ export const CalendarContainer = styled.div`
 export const AddBtnContainer = styled.div`
   width: 1000px;
   height: 500px;
-  margin-left: 15%;
   position: relative;
   background: white;
   font-family: "DM Sans";
@@ -197,4 +196,134 @@ export const Input = styled.input`
   box-sizing: border-box;
   color: #cfc7c7;
   height: 20px;
+`;
+
+export const AddTeamModal = styled(Modal)`
+  .AddBtn-modal {
+    background-color: gray;
+    border-radius: 10px;
+    padding: 20px;
+    position: relative;
+    z-index: 10;
+  }
+`;
+
+export const AddTeamContainer = styled.div`
+  width: 1000px;
+  height: 500px;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  background: white;
+  font-family: "DM Sans";
+`;
+
+export const AddTeamButton = styled.button`
+  border: none;
+  border-radius: 20%;
+  padding: 0px;
+  width: 125px;
+  height: 125px;
+  margin-top: 20px;
+
+  background-color: #4339f2;
+  &:hover {
+    background-color: #4339f2;
+    transform: scale(1.05);
+  }
+
+  &:active {
+    background-color: #4339f2;
+    transform: scale(0.9);
+  }
+`;
+
+export const img = styled.img`
+  width: 110px;
+  height: 110px;
+`;
+export const ClassTeamContainer = styled.div`
+  width: 200px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: #e7dcdc;
+  font-family: "DM Sans";
+  font-size: 35px;
+  font-weight: 500;
+`;
+export const SelectedClassContainer = styled.div`
+  width: 800px;
+  position: relative;
+  flex-direction: column;
+  background: #ffffff;
+  font-family: "DM Sans";
+  font-size: 35px;
+  font-weight: 500;
+`;
+
+export const ModalButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  background: #ffffff;
+`;
+
+export const sbutton = styled.button`
+  width: 100px;
+  height: 50px;
+  font-size: 15px;
+`;
+
+export const ClassTeamList = styled.button`
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
+  width: 170px;
+  height: 40px;
+  margin-top: 10px;
+  background-color: #ffffff;
+  font-size: 15px;
+  text-align: center;
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
+
+export const TeamName = styled.div`
+  font-size: 50px;
+  text-align: center;
+  /* font-family: ; */
+`;
+
+export const TeamMember = styled.div`
+  display: flex;
+  flex-direction: row;
+  font-size: 30px;
+  margin-left: 20px;
+`;
+
+export const TeamMemberList = styled.div`
+  margin-left: 20px;
+`;
+
+export const TeamMemo = styled.div``;
+
+export const SelectClassContainer = styled.div`
+  width: 300px;
+  height: 150px;
+  margin-left: 15%;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  background: white;
+  font-family: "DM Sans";
+`;
+
+export const NewTeamLabel = styled.div`
+  width: 200px;
+  height: 55px;
+  margin-left: 15px;
+  color: rgba(0, 0, 0, 0.5);
+  word-wrap: break-word;
 `;

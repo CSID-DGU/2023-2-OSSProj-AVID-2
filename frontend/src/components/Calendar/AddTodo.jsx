@@ -8,7 +8,11 @@ import API from "../../api/axios.jsx";
 
 const customModalStyles = {
   content: {
-    backgroundColor: "gray",
+    backgroundColor: "transparent",
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
     border: "none",
     borderRadius: "10px",
     padding: "20px",
