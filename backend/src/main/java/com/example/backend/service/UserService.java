@@ -74,7 +74,7 @@ public class UserService implements UserDetailsService {
         }
 
 
-        return new UserLoginResponseDTO(user.getUserName(), user.getUserID(), user.getUserType().name());
+        return new UserLoginResponseDTO(user.getUserID(), user.getUserName(), user.getUserType().name());
     }
 
     public UserHomeResponseDTO getHome(String userID) {
