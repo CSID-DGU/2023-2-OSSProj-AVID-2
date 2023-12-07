@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -68,5 +70,16 @@ public class UserController {
         }
         UserSubjectResponseDTO responseDTO = userService.setSubjects(loginUser, requestDTO);
         return Response.success(responseDTO);
+    }
+
+    @GetMapping("/subjects")
+    public Response<List<String>> getSubjectNames(HttpSession session) {
+        UserLoginResponseDTO loginUser = (UserLoginResponseDTO) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return null;
+        }
+
+        List<String> subjectNames = userService.getSubjectNames(loginUser);
+        return Response.success(subjectNames);
     }
 }
