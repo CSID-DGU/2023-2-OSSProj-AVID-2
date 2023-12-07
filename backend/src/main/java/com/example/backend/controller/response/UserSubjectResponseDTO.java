@@ -4,16 +4,22 @@ import com.example.backend.entity.UserSubjectEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Getter
 @AllArgsConstructor
 public class UserSubjectResponseDTO {
-    private Long subjectId;
-    private String subjectName;
-
-    public static UserSubjectResponseDTO fromUserSubject(UserSubjectEntity userSubject) {
-        return new UserSubjectResponseDTO(
-                userSubject.getId(),
-                userSubject.getSubject().getSubjectName()
-        );
+    private Long userId;
+    private List<UserSubjectEntity> userSubjectEntities;
+    public static UserSubjectResponseDTO of(Long userId, List<UserSubjectEntity> userSubjectEntities) {
+        return new UserSubjectResponseDTO(userId, userSubjectEntities);
     }
+
+    public List<String> getSubjectNames() {
+        return userSubjectEntities.stream()
+                .map(userSubjectEntity -> userSubjectEntity.getSubject().getSubjectName())
+                .collect(Collectors.toList());
+    }
+
 }

@@ -51,16 +51,26 @@ const SignUpPage = () => {
 
     try {
       // POST 요청 코드
-      const response = await API.post("/signup", {
-        name: Name,
+      const signUpResponse = await API.post("/signup", {
         userID: studentId,
         userPwd: password,
         userName: Name,
         userType: userType,
         userMajor: major,
       });
-      console.log(response.result);
-      navigate("/login");
+      console.log(signUpResponse);
+      if(signUpResponse.data.resultCode === "SUCCESS") {
+        console.log("회원가입 성공");
+        const loginResponse = await API.post("/login", {
+          userID: studentId,
+          userPwd: password,
+        });
+        console.log(loginResponse);
+        if (loginResponse.status === 200) {
+          navigate("/lecture");
+        }
+      }
+
     } catch (error) {
       console.log("error");
       console.error(error);

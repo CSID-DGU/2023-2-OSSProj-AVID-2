@@ -8,6 +8,7 @@ import LoginPage from "./pages/LoginPage/LoginPage";
 import SignupPage from "./pages/SignUpPage/SignUpPage";
 import MyPage from "./pages/MyPage/MyPage";
 import TeamPage from "./pages/TeamPage/TeamPage";
+import LecturePage from "./pages/LecturePage/LecturePage";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -27,6 +28,7 @@ function App() {
       <Route path="/teampage" element={<Layout />}>
         <Route index element={<TeamPage />}></Route>
       </Route>
+      <Route path="/lecture" element={<LecturePage />}></Route>
     </Routes>
   );
 }
