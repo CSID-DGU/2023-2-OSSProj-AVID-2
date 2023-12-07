@@ -4,16 +4,15 @@ import com.example.backend.entity.UserSubjectEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.List;
+
 @Getter
 @AllArgsConstructor
 public class UserSubjectResponseDTO {
-    private Long subjectId;
-    private String subjectName;
-
-    public static UserSubjectResponseDTO fromUserSubject(UserSubjectEntity userSubject) {
-        return new UserSubjectResponseDTO(
-                userSubject.getId(),
-                userSubject.getSubject().getSubjectName()
-        );
+    private Long userId;
+    private List<UserSubjectEntity> userSubjectEntities;
+    public static UserSubjectResponseDTO of(Long userId, List<UserSubjectEntity> userSubjectEntities) {
+        return new UserSubjectResponseDTO(userId, userSubjectEntities);
     }
+
 }

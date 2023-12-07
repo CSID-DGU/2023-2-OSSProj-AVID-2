@@ -16,6 +16,7 @@ import com.example.backend.repository.SubjectRepository;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.repository.UserSubjectRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,7 +27,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
-
+import java.util.List;
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -85,20 +87,32 @@ public class UserService implements UserDetailsService {
         return new UserHomeResponseDTO(user.getUserID(), user.getUserName(), user.getUserType().name());
     }
 
-    public UserSubjectResponseDTO setSubjects(UserSubjectRequestDTO requestDTO) {
+    public UserSubjectResponseDTO setSubjects(UserLoginResponseDTO loginUser, UserSubjectRequestDTO requestDTO) {
         UserEntity user = userRepository
-                .findByUserID(requestDTO.getUserID())
-                .orElseThrow(()-> new Exception(ErrorCode.INVALID_LOGIN));
+                .findByUserID(loginUser.getUserID())
+                .orElseThrow(() -> new Exception(ErrorCode.INVALID_LOGIN));
 
-        SubjectEntity subject = subjectRepository
-                .findById(Long.valueOf(requestDTO.getSubjectID()))
-                .orElseThrow(()-> new Exception(ErrorCode.SUBJECT_NOT_FOUND));
+        List<Long> subjectIds = requestDTO.getId();
 
-        // UserSubjectEntity 객체 생성
-        UserSubjectEntity userSubjectEntity = UserSubjectEntity.fromUserSubject(user, subject);
+        for (Long subjectId : subjectIds) {
+            // 해당 강의 ID로 SubjectEntity를 찾고, 없으면 예외 발생
+            SubjectEntity subject = subjectRepository
+                    .findById(subjectId)
+                    .orElseThrow(() -> new Exception(ErrorCode.SUBJECT_NOT_FOUND));
 
-        // userSubjectRepository에 저장
-        userSubjectRepository.save(userSubjectEntity);
-        return UserSubjectResponseDTO.fromUserSubject(userSubjectEntity);
+            // 사용자가 이미 수강 중인 과목인지 확인
+            userSubjectRepository.findByUserAndSubject(user, subject)
+                    .ifPresent(userSubjectEntity -> {
+                        throw new Exception(ErrorCode.DUPLICATED_CODE, String.format("이미 수강 중인 과목입니다. (%s)", userSubjectEntity.getSubject().getSubjectName()));
+                    });
+
+            // UserSubjectEntity 객체 생성
+            UserSubjectEntity userSubjectEntity = UserSubjectEntity.fromUserSubject(user, subject);
+
+            // userSubjectRepository에 저장
+            userSubjectRepository.save(userSubjectEntity);
+        }
+        return UserSubjectResponseDTO.of(user.getId(), userSubjectRepository.findByUser(user));
     }
+
 }
