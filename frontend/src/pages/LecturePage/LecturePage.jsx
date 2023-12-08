@@ -12,7 +12,7 @@ function LecturePage() {
 
   const getLectureList = async () => {
     try {
-      const response = await API.get("/api/subjects");
+      const response = await API.get("/api/user-subjects");
       setLectureList(response.data);
     } catch (error) {
       console.error(error);
@@ -40,7 +40,7 @@ function LecturePage() {
       };
   
       // POST 요청 보내기
-      const response = await API.post("/subjects", requestData);
+      const response = await API.post("/user-subjects", requestData);
   
       // 성공 시 처리
       console.log("강의 등록 성공", response.data);
