@@ -1,6 +1,7 @@
 package com.example.backend.service;
 
 import com.example.backend.controller.request.UserSubjectRequestDTO;
+import com.example.backend.controller.response.SubjectResponseDTO;
 import com.example.backend.controller.response.UserLoginResponseDTO;
 import com.example.backend.controller.response.UserSubjectResponseDTO;
 import com.example.backend.entity.SubjectEntity;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -57,12 +59,21 @@ public class UserSubjectService {
     }
 
 
-    public List<String> getSubjectNames(UserLoginResponseDTO loginUser) {
+    public List<SubjectResponseDTO> getSubjectNames(UserLoginResponseDTO loginUser) {
         UserEntity user = userRepository
                 .findByUserID(loginUser.getUserID())
                 .orElseThrow(() -> new Exception(ErrorCode.INVALID_LOGIN));
 
         UserSubjectResponseDTO responseDTO = UserSubjectResponseDTO.of(user.getId(), userSubjectRepository.findByUser(user));
-        return responseDTO.getSubjectNames();
+        return responseDTO.getSubjectResponseDTOs();
+    }
+
+    public List<UserEntity> getStudentsInSameSubject(SubjectEntity subject) {
+        List<UserSubjectEntity> userSubjects = userSubjectRepository.findBySubject(subject);
+
+        return userSubjects.stream()
+                .map(UserSubjectEntity::getUser)
+                .distinct()
+                .collect(Collectors.toList());
     }
 }

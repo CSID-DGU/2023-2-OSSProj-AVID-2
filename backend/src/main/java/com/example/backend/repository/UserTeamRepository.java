@@ -1,5 +1,6 @@
 package com.example.backend.repository;
 
+import com.example.backend.entity.SubjectEntity;
 import com.example.backend.entity.TeamEntity;
 import com.example.backend.entity.UserEntity;
 import com.example.backend.entity.UserTeamEntity;
@@ -20,4 +21,8 @@ public interface UserTeamRepository extends JpaRepository<UserTeamEntity, Long> 
     List<String> findUserInfoByTeamId(@Param("teamId") Long teamId);
 
     boolean existsByUserAndTeam(UserEntity user, Long subjectId);
+
+    boolean existsByUserAndSubject(UserEntity user, SubjectEntity subject);
+
+    List<UserTeamEntity> findByUser(UserEntity user);
 }

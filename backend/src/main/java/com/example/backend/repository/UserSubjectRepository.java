@@ -22,4 +22,6 @@ public interface UserSubjectRepository extends JpaRepository<UserSubjectEntity, 
     List<String> findSubjectByUserId(@Param("userId") Long userId);
 
     List<UserSubjectEntity> findByUser(UserEntity user);
+
+    List<UserSubjectEntity> findBySubject(SubjectEntity subject);
 }
