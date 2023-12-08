@@ -10,7 +10,7 @@ export default function MainPage() {
   
   const getLectureList = async () => {
     try {
-      const response = await API.get("/user-subjects");
+      const response = await API.get("//api/user-subjects");
       if(response.data.resultCode === "SUCCESS"){
         console.log(response.data.result)
         setLectureList(response.data.result);
