@@ -4,7 +4,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import * as s from "./Styled.jsx";
-import AddTeam from "./AddTeam.jsx";
+import AddTeam from "../TeamPage/AddTeam.jsx";
 
 function TeamCalendar() {
   const events = [
