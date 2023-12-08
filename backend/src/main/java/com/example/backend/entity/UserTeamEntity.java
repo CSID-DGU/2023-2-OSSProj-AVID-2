@@ -21,10 +21,14 @@ public class UserTeamEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     private TeamEntity team;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "subject_id")
+    private SubjectEntity subject;
 
     @Builder
-    public UserTeamEntity(UserEntity user, TeamEntity team) {
+    public UserTeamEntity(UserEntity user, TeamEntity team, SubjectEntity subject) {
         this.user = user;
         this.team = team;
+        this.subject = subject;
     }
 }

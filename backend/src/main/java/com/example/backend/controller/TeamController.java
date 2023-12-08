@@ -1,23 +1,31 @@
 package com.example.backend.controller;
 
-import com.example.backend.entity.SubjectEntity;
+import com.example.backend.controller.request.CreateTeamRequestDTO;
+import com.example.backend.controller.response.Response;
+import com.example.backend.controller.response.UserLoginResponseDTO;
+import com.example.backend.controller.response.UserTeamResponseDTO;
 import com.example.backend.entity.TeamEntity;
+import com.example.backend.entity.UserEntity;
+import com.example.backend.repository.UserRepository;
 import com.example.backend.service.TeamService;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/api/team")
 public class TeamController {
 
     @Autowired
     private TeamService teamService;
+    @Autowired
+    private UserRepository userRepository;
 
     // 각 과목 수강 학생
     @GetMapping("/userNames/{subjectId}")
@@ -44,10 +52,23 @@ public class TeamController {
         return teamService.getSubjectByUserId(userId);
     }
 
-    // 팀 생성
+//    // 팀 생성
+//    @PostMapping("/create")
+//    public TeamEntity createTeam(@RequestBody SubjectEntity subject) {
+//        return teamService.createTeam(subject);
+//    }
+
+    // 팀 생성 보완(유저 추가)
     @PostMapping("/create")
-    public TeamEntity createTeam(@RequestBody SubjectEntity subject) {
-        return teamService.createTeam(subject);
+    public Response<TeamEntity> createTeam(@RequestBody CreateTeamRequestDTO requestDTO, HttpSession session) {
+        UserLoginResponseDTO loginUser = (UserLoginResponseDTO) session.getAttribute("loginUser");
+
+        UserEntity user = userRepository
+                .findByUserID(loginUser.getUserID())
+                .orElseThrow(() -> new UsernameNotFoundException("유저를 찾을 수 없습니다. ID: " + loginUser.getUserID()));
+
+        return Response.success(teamService.createTeamAndAddUser(requestDTO, user));
+
     }
 
     // 팀원 추가(이렇게 쓰고 싶지 않다...
@@ -59,6 +80,13 @@ public class TeamController {
         } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
+    }
+
+    @GetMapping("/list")
+    public Response<List<UserTeamResponseDTO>> getTeamList(HttpSession session) {
+        UserLoginResponseDTO loginUser = (UserLoginResponseDTO) session.getAttribute("loginUser");
+
+        return Response.success(teamService.getTeamList(loginUser));
     }
 
 }
