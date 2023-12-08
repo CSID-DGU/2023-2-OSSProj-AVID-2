@@ -12,7 +12,6 @@ export default function MainPage() {
     try {
       const response = await API.get("/api/user-subjects");
       if(response.data.resultCode === "SUCCESS"){
-        console.log(response.data.result)
         setLectureList(response.data.result);
       }
     } catch (error) {
@@ -60,7 +59,7 @@ export default function MainPage() {
             <s.TitleBox>내 강의실</s.TitleBox>
             <s.LectureList>
               {lectureList.map((lecture, index) => (
-                <p key={index}>{lecture}</p>
+                <p key={index}>{lecture.subjectName}</p>
               ))}
             </s.LectureList>
           </s.LectureContainer>
