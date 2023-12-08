@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import * as s from "./Styled.jsx";
+import * as s from "../Calendar/Styled.jsx";
 import Modal from "react-modal";
 import API from "../../api/axios.jsx";
 
