@@ -25,26 +25,26 @@ public class TeamController {
     @Autowired
     private UserRepository userRepository;
 
-    // 각 과목 수강 학생
+    // 각 과목 수강 학생 + /api/user-subjects/{subjectId}/students 경로로 변경함 아래 코드 미사용
     @GetMapping("/userNames/{subjectId}")
     public List<String> getUserNamesBySubjectId(@PathVariable Long subjectId) {
         return teamService.getUserNamesBySubjectId(subjectId);
     }
 
-    // 유저의 팀 정보
-    @GetMapping("/subjectName/{userId}")
+    // 유저의 팀원 정보
+    @GetMapping("/{userId}/userNames")
     public String getSubjectNameByUserId(@PathVariable Long userId) {
         return teamService.getSubjectNameByUserId(userId);
     }
 
     // 각 팀의 팀원 정보
-    @GetMapping("/userInfo/{teamId}")
+    @GetMapping("/{teamId}/userInfo")
     public List<String> getUserInfoByTeamId(@PathVariable Long teamId) {
         return teamService.getUserInfoByTeamId(teamId);
     }
 
     // 팀 생성 화면
-    // 유저가 수강하는 과목
+    // 유저가 수강하는 과목, UserSubjectController에서 관리하도록 변경
     @GetMapping("/create/{userId}")
     public List<String> getSubjectByUserId(@PathVariable Long userId) {
         return teamService.getSubjectByUserId(userId);
@@ -69,7 +69,7 @@ public class TeamController {
 
     }
 
-    // 팀원 추가(이렇게 쓰고 싶지 않다...
+    // 팀원 추가 (미사용)
 //    @PostMapping("/addUser")
 //    public ResponseEntity<String> addUserToTeam(@RequestParam Long userId, @RequestParam Long teamId, @RequestParam Long subjectId) {
 //        try {
