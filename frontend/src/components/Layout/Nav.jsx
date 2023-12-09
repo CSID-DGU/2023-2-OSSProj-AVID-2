@@ -6,6 +6,18 @@ import API from "../../api/axios.jsx";
 export default function Nav() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userInfo, setUserInfo] = useState({});
+  const handleLogout = async () => {
+    try {
+      const response = await API.post("/logout", {});
+      console.log(response);
+      if (response.data.resultCode === "SUCCESS") {
+        setIsLoggedIn(false);
+      } 
+    } catch (error) {
+      window.location.reload();
+    }
+  }
+  
 
   useEffect(() => {
     const checkLoginStatus = async () => {
@@ -26,6 +38,7 @@ export default function Nav() {
     checkLoginStatus();
   }, []);
 
+
   return (
     <s.Container>
       <Link to="/">
@@ -38,10 +51,10 @@ export default function Nav() {
             {userInfo.userName}({userInfo.userID})님
           </s.User>
 
-          <Link to="/logout">
-            <s.LoginedBtn>로그아웃</s.LoginedBtn>
-          </Link>
-          <s.LoginedBtn> 대표권한설정</s.LoginedBtn>
+          <s.LoginedBtn onClick={handleLogout}>로그아웃</s.LoginedBtn>
+        <Link to="/mypage">  
+          <s.LoginedBtn> 마이페이지</s.LoginedBtn>
+        </Link>
           <s.LoginedBtn>Webex 비밀번호 변경</s.LoginedBtn>
           <s.LectureBtn>강의실 선택</s.LectureBtn>
           <s.Language>HOME | ENG | CHN | JPN </s.Language>
