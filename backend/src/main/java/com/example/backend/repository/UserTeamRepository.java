@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserTeamRepository extends JpaRepository<UserTeamEntity, Long> {
     List<UserTeamEntity> findAllByTeam(TeamEntity team);
@@ -20,9 +21,12 @@ public interface UserTeamRepository extends JpaRepository<UserTeamEntity, Long> 
     @Query("SELECT CONCAT(u.userID, ', ', u.userName, ', ', u.userMajor) FROM UserTeamEntity t JOIN t.user u WHERE t.team.id = :teamId")
     List<String> findUserInfoByTeamId(@Param("teamId") Long teamId);
 
-    boolean existsByUserAndTeam(UserEntity user, Long subjectId);
+    boolean existsByUserAndTeam(UserEntity user, TeamEntity team);
 
     boolean existsByUserAndSubject(UserEntity user, SubjectEntity subject);
 
     List<UserTeamEntity> findByUser(UserEntity user);
+
+    Optional<UserTeamEntity> findByUserAndTeamAndSubject(UserEntity user, TeamEntity team, SubjectEntity subject);
+
 }

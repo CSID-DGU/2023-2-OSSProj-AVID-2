@@ -1,5 +1,6 @@
 package com.example.backend.service;
 
+import com.example.backend.controller.request.AddUserToTeamRequestDTO;
 import com.example.backend.controller.request.CreateTeamRequestDTO;
 import com.example.backend.controller.response.UserLoginResponseDTO;
 import com.example.backend.controller.response.UserTeamResponseDTO;
@@ -11,7 +12,6 @@ import com.example.backend.exception.ErrorCode;
 import com.example.backend.exception.Exception;
 import com.example.backend.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -93,23 +93,23 @@ public class TeamService {
     }
 
     // 팀원 추가
-    public void addUserToTeam(Long userId, Long teamId, Long subjectId) throws NotFoundException {
-        UserEntity user = userRepository.findById(userId)
-                .orElseThrow(() -> new UsernameNotFoundException("유저를 찾을 수 없습니다. ID: " + userId));
-
-        TeamEntity team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new NotFoundException("팀을 찾을 수 없습니다. ID: " + teamId));
-
-        // 팀에 유저가 이미 존재하는지 확인
-        if (!userTeamRepository.existsByUserAndTeam(user, subjectId)) {
-            UserTeamEntity userTeam = UserTeamEntity.builder()
-                    .user(user)
-                    .team(team)
-                    .build();
-
-            userTeamRepository.save(userTeam);
-        }
-    }
+//    public void addUserToTeam(Long userId, Long teamId, Long subjectId) throws NotFoundException {
+//        UserEntity user = userRepository.findById(userId)
+//                .orElseThrow(() -> new UsernameNotFoundException("유저를 찾을 수 없습니다. ID: " + userId));
+//
+//        TeamEntity team = teamRepository.findById(teamId)
+//                .orElseThrow(() -> new NotFoundException("팀을 찾을 수 없습니다. ID: " + teamId));
+//
+//        // 팀에 유저가 이미 존재하는지 확인
+//        if (!userTeamRepository.existsByUserAndTeam(user, subjectId)) {
+//            UserTeamEntity userTeam = UserTeamEntity.builder()
+//                    .user(user)
+//                    .team(team)
+//                    .build();
+//
+//            userTeamRepository.save(userTeam);
+//        }
+//    }
 
     @Transactional
     public List<UserTeamResponseDTO> getTeamList(UserLoginResponseDTO loginUser) {
@@ -131,5 +131,44 @@ public class TeamService {
         }
 
         return responseDTOs;
+    }
+
+    public void addUserToTeamV1(AddUserToTeamRequestDTO requestDTO, Long teamId) {
+// requestDTO에서 필요한 정보 추출
+        Long userId = requestDTO.getUserId();
+        // 그 외에 필요한 정보가 있다면 DTO에 추가해서 여기서 사용
+
+        // 유저 정보 가져오기
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("유저를 찾을 수 없습니다. ID: " + userId));
+
+        // 팀 정보 가져오기
+        TeamEntity team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new Exception(ErrorCode.TEAM_NOT_FOUND,"팀을 찾을 수 없습니다. ID: " + requestDTO.getTeamId()));
+
+        // 과목 정보 가져오기
+        SubjectEntity subject = subjectRepository.findById(requestDTO.getSubjectId())
+                .orElseThrow(() -> new Exception(ErrorCode.SUBJECT_NOT_FOUND,"과목을 찾을 수 없습니다. ID: " + requestDTO.getSubjectId()));
+
+//        // 팀에 유저가 이미 존재하는지 확인
+//        if (!userTeamRepository.existsByUserAndTeam(user, team)) {
+//            UserTeamEntity userTeam = UserTeamEntity.builder()
+//                    .user(user)
+//                    .team(team)
+//                    .subject(subject)
+//                    .build();
+//
+//            userTeamRepository.save(userTeam);
+//        }
+
+        UserTeamEntity userTeam = userTeamRepository.findByUserAndTeamAndSubject(user, team, subject)
+                .orElseGet(() -> {
+                    UserTeamEntity newUserTeam = UserTeamEntity.builder()
+                            .user(user)
+                            .team(team)
+                            .subject(subject)
+                            .build();
+                    return userTeamRepository.save(newUserTeam);
+                });
     }
 }
