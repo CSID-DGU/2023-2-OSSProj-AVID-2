@@ -22,4 +22,10 @@ public class UserSubjectResponseDTO {
                 .collect(Collectors.toList());
     }
 
+    public List<SubjectResponseDTO> getSubjectResponseDTOs() {
+        return userSubjectEntities.stream()
+                .map(userSubjectEntity -> new SubjectResponseDTO(userSubjectEntity.getSubject()))
+                .collect(Collectors.toList());
+    }
+
 }

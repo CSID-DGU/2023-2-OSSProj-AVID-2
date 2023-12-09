@@ -1,16 +1,23 @@
 package com.example.backend.service;
 
-import com.example.backend.entity.*;
-import com.example.backend.repository.TeamRepository;
-import com.example.backend.repository.UserRepository;
-import com.example.backend.repository.UserSubjectRepository;
-import com.example.backend.repository.UserTeamRepository;
+import com.example.backend.controller.request.CreateTeamRequestDTO;
+import com.example.backend.controller.response.UserLoginResponseDTO;
+import com.example.backend.controller.response.UserTeamResponseDTO;
+import com.example.backend.entity.SubjectEntity;
+import com.example.backend.entity.TeamEntity;
+import com.example.backend.entity.UserEntity;
+import com.example.backend.entity.UserTeamEntity;
+import com.example.backend.exception.ErrorCode;
+import com.example.backend.exception.Exception;
+import com.example.backend.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,6 +34,7 @@ public class TeamService {
 
     private final UserRepository userRepository;
 
+    private final SubjectRepository subjectRepository;
     // 유저가 수강하는 과목 반환
     public List<String> getSubjectByUserId(Long userId) {
         return userSubjectRepository.findSubjectByUserId(userId);
@@ -56,6 +64,34 @@ public class TeamService {
         return teamRepository.save(team);
     }
 
+    // 팀 생성 보완(유저 추가)
+    public TeamEntity createTeamAndAddUser(CreateTeamRequestDTO requestDTO, UserEntity user) {
+        //과목 정보 가져오기
+        SubjectEntity subject = subjectRepository
+                .findById(requestDTO.getSubjectId())
+                .orElseThrow(() -> new Exception(ErrorCode.SUBJECT_NOT_FOUND));
+
+        if(userTeamRepository.existsByUserAndSubject(user, subject)) {
+            throw new Exception(ErrorCode.DUPLICATED_CODE, String.format("이미 해당 과목의 팀이 존재합니다. (%s)", subject.getSubjectName()));
+        }
+
+        // 팀 생성
+        TeamEntity team = TeamEntity.builder()
+                .subject(subject)
+                .build();
+        TeamEntity savedTeam = teamRepository.save(team);
+
+        // 팀에 유저 추가
+        UserTeamEntity userTeam = UserTeamEntity.builder()
+                .user(user)
+                .team(savedTeam)
+                .subject(subject)
+                .build();
+        userTeamRepository.save(userTeam);
+
+        return savedTeam;
+    }
+
     // 팀원 추가
     public void addUserToTeam(Long userId, Long teamId, Long subjectId) throws NotFoundException {
         UserEntity user = userRepository.findById(userId)
@@ -73,5 +109,27 @@ public class TeamService {
 
             userTeamRepository.save(userTeam);
         }
+    }
+
+    @Transactional
+    public List<UserTeamResponseDTO> getTeamList(UserLoginResponseDTO loginUser) {
+        UserEntity user = userRepository
+                .findByUserID(loginUser.getUserID())
+                .orElseThrow(() -> new UsernameNotFoundException("유저를 찾을 수 없습니다. ID: " + loginUser.getUserID()));
+
+        List<UserTeamEntity> userTeamEntities = userTeamRepository.findByUser(user);
+
+        List<UserTeamResponseDTO> responseDTOs = new ArrayList<>();
+
+        for (UserTeamEntity userTeamEntity : userTeamEntities) {
+            UserTeamResponseDTO responseDTO = UserTeamResponseDTO.of(
+                    user.getId(),
+                    userTeamEntity.getTeam().getId(),  // Assuming there is a getTeam() method in UserTeamEntity
+                    userTeamEntity.getTeam().getSubject().getSubjectName()  // Assuming there is a getSubject() method in TeamEntity
+            );
+            responseDTOs.add(responseDTO);
+        }
+
+        return responseDTOs;
     }
 }

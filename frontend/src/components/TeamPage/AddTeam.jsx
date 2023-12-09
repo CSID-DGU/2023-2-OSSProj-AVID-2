@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import * as s from "../Calendar/Styled.jsx";
 import Modal from "react-modal";
@@ -51,6 +51,27 @@ const AddTeam = () => {
   const [newTeamName, setNewTeamName] = useState(""); //각 팀의 이름
   const [selectedTeam, setSelectedTeam] = useState(""); //현재 정보 표시되고 있는 팀
   const [teamMembers, setTeamMembers] = useState({});
+  const [selectedLecture, setSelectedLecture] = useState("");
+  const [lectureList, setLectureList] = useState([]);
+  const [teamList, setTeamList] = useState([]);
+
+  
+  const getLectureList = async () => {
+    try {
+      const response = await API.get("/api/user-subjects");
+      if(response.data.resultCode === "SUCCESS"){
+        setLectureList(response.data.result);
+        console.log(response.data.result);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    getLectureList();
+    getTeamList();
+  }, []);
 
   const handleClickAddMember = () => {
     setAddMemberModalOpen((prev) => !prev);
@@ -64,7 +85,39 @@ const AddTeam = () => {
       setAddTeamModalOpen(false);
     }
   };
+
+  const createTeam = async () => {  
+    try {
+      const response = await API.post("/api/team/create", {
+        subjectId: Number(selectedLecture),
+      });
+      console.log(response);
+      if(response.data.resultCode === "SUCCESS"){
+        setClassTeamList((prevList) => [...prevList, newTeamName]);
+        setAddTeamModalOpen(false);
+      }
+    } catch (error) {
+      console.error(error);
+  
+      alert("팀 생성에 실패했습니다.");
+    }
+  };
+
+  const getTeamList = async () => {
+    try {
+      const response = await API.get("/api/team/list");
+      if(response.data.resultCode === "SUCCESS"){
+        setTeamList(response.data.result);
+        console.log("response" + JSON.stringify(response.data.result));
+        console.log("class"+classTeamList);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleSelectTeam = (teamName) => {
+    console.log("Selected Team Name:", teamName); // 확인을 위한 로그 추가
     setSelectedTeam(teamName);
     // Create an empty array for the team members if it doesn't exist
     if (!teamMembers[teamName]) {
@@ -73,7 +126,7 @@ const AddTeam = () => {
         [teamName]: [],
       }));
     }
-  };
+};
 
   const handleAddTeamMember = (memberName) => {
     if (selectedTeam && memberName.trim() !== "") {
@@ -98,12 +151,12 @@ const AddTeam = () => {
       >
         <s.AddTeamContainer>
           <s.ClassTeamContainer>
-            {classTeamList.map((classTeam, index) => (
+            {teamList.map((classTeam, index) => (
               <s.ClassTeamList
                 key={index}
-                onClick={() => handleSelectTeam(classTeam)}
+                onClick={() => handleSelectTeam(classTeam.subjectName)}
               >
-                {classTeam}
+                {classTeam.subjectName}
               </s.ClassTeamList>
             ))}
           </s.ClassTeamContainer>
@@ -131,7 +184,15 @@ const AddTeam = () => {
               onRequestClose={handleClickAddTeam}
               ariaHideApp={false}
             >
-              <s.NewTeamLabel>
+              {/* 강의를 선택할 드롭다운 추가 */}
+            <select value={selectedLecture} onChange={(e) => setSelectedLecture(e.target.value)}>
+                <option value="" disabled>Select a lecture</option>
+                {lectureList.map((lecture, index) => (
+                    <option key={index} value={lecture.id}>{lecture.subjectName}</option>
+                ))}
+            </select>
+
+              {/* <s.NewTeamLabel>
                 New Team Name:
                 <input
                   type="text"
@@ -139,8 +200,8 @@ const AddTeam = () => {
                   value={newTeamName}
                   onChange={(e) => setNewTeamName(e.target.value)}
                 />
-              </s.NewTeamLabel>
-              <s.sbutton onClick={handleCreateTeam}>Create Team</s.sbutton>
+              </s.NewTeamLabel> */}
+              <s.sbutton onClick={createTeam}>Create Team</s.sbutton>
             </Modal>
 
             <s.sbutton onClick={handleClickAddMember}>팀원 추가</s.sbutton>

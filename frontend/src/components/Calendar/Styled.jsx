@@ -283,6 +283,7 @@ export const ClassTeamList = styled.button`
   height: 40px;
   margin-top: 10px;
   background-color: #ffffff;
+  color: rgba(0, 0, 0, 0.5);
   font-size: 15px;
   text-align: center;
   &:hover {
