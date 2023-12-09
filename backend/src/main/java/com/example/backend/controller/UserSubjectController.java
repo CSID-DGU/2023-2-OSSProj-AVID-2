@@ -1,12 +1,8 @@
 package com.example.backend.controller;
 
 import com.example.backend.controller.request.UserSubjectRequestDTO;
-import com.example.backend.controller.response.Response;
-import com.example.backend.controller.response.SubjectResponseDTO;
-import com.example.backend.controller.response.UserLoginResponseDTO;
-import com.example.backend.controller.response.UserSubjectResponseDTO;
+import com.example.backend.controller.response.*;
 import com.example.backend.entity.SubjectEntity;
-import com.example.backend.entity.UserEntity;
 import com.example.backend.exception.ErrorCode;
 import com.example.backend.exception.Exception;
 import com.example.backend.repository.SubjectRepository;
@@ -17,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/user-subjects")
@@ -49,12 +46,17 @@ public class UserSubjectController {
     }
 
     @GetMapping("/{subjectId}/students")
-    public Response<List<UserEntity>> getStudentsInSameSubject(@PathVariable Long subjectId) {
+    public Response<List<SubjectUsersResponseDTO>> getStudentsInSameSubject(@PathVariable Long subjectId) {
         SubjectEntity subject = subjectRepository
                 .findById(subjectId)
                 .orElseThrow(() -> new Exception(ErrorCode.SUBJECT_NOT_FOUND));
 
-        List<UserEntity> students = userSubjectService.getStudentsInSameSubject(subject);
+        List<SubjectUsersResponseDTO> students = userSubjectService.getStudentsInSameSubject(subject)
+                .stream()
+                .map(SubjectUsersResponseDTO::of)
+                .distinct()
+                .collect(Collectors.toList());
+
         return Response.success(students);
     }
 }

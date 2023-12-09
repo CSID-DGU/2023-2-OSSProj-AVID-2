@@ -3,6 +3,7 @@ package com.example.backend.repository;
 import com.example.backend.entity.SubjectEntity;
 import com.example.backend.entity.UserEntity;
 import com.example.backend.entity.UserSubjectEntity;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,6 +23,6 @@ public interface UserSubjectRepository extends JpaRepository<UserSubjectEntity, 
     List<String> findSubjectByUserId(@Param("userId") Long userId);
 
     List<UserSubjectEntity> findByUser(UserEntity user);
-
+    @EntityGraph(attributePaths = "user")
     List<UserSubjectEntity> findBySubject(SubjectEntity subject);
 }
