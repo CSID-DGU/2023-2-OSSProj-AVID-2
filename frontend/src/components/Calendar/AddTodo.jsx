@@ -3,8 +3,9 @@ import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import * as s from "./Styled.jsx";
-
 import API from "../../api/axios.jsx";
+
+// import { Date } from "react-datepicker";
 
 const customModalStyles = {
   content: {
@@ -49,7 +50,7 @@ const DateInput = styled(DatePicker)`
 const AddBtn = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [title, setTitle] = useState("");
-  const [tags, setTags] = useState("");
+  const [content, setContent] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
@@ -58,14 +59,14 @@ const AddBtn = () => {
 
     const data = {
       title: title,
-      content: tags,
-      scheduleType: "COMMON",
-      startDate: startDate ? startDate.toString() : null,
-      endDate: endDate ? endDate.toString() : null,
+      content: content,
+      scheduleType: "SCHEDULE",
+      startDate: startDate ? startDate.toISOString() : null,
+      endDate: endDate ? endDate.toISOString() : null,
     };
 
     try {
-      const response = await API.post("/schedule/personal", data);
+      const response = await API.post("/api/schedule/personal", data);
       console.log(response.data);
     } catch (error) {
       console.error(error);
@@ -93,11 +94,11 @@ const AddBtn = () => {
               />
             </s.FlexContainer>
             <s.FlexContainer>
-              <s.ModalLabel> 태그:</s.ModalLabel>
+              <s.ModalLabel> 내용:</s.ModalLabel>
               <Input
                 type="text"
-                value={tags}
-                onChange={(e) => setTags(e.target.value)}
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
               />
             </s.FlexContainer>
             <s.FlexContainer>

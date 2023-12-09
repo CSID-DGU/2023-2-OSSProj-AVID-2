@@ -96,6 +96,19 @@ export const CalendarContainer = styled.div`
   height: 80%;
   position: relative;
   flex: horizontal;
+  /* &:a {
+   color: #000000; 
+  }
+  .fc-day-sat{
+    color: blue !important;
+  }
+  .fc-day-sun {
+    color: red !important;
+  }
+
+  .fc-day-mon, .fc-day-tue, .fc-day-wed, .fc-day-thu, .fc-day-fri {
+    color: black !important;
+  } */
 `;
 
 //AddBtn.jsx
