@@ -16,7 +16,8 @@ public enum ErrorCode {
     SCHEDULE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 일정을 찾을 수 없습니다."),
     SCHEDULE_TYPE_PROBLEM(HttpStatus.CONFLICT, "스케쥴이 잘못 기록되었습니다."),
     INVALID_SCHEDULE(HttpStatus.BAD_REQUEST, "해당 일정으로는 요청하신 내용을 처리할 수 없습니다."),
-    SUBJECT_NOT_FOUND_IN_USER_SUBJECT(HttpStatus.NOT_FOUND, "해당 과목을 수강하지 않았습니다.");
+    SUBJECT_NOT_FOUND_IN_USER_SUBJECT(HttpStatus.NOT_FOUND, "해당 과목을 수강하지 않았습니다."),
+    TEAM_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 팀을 찾을 수 없습니다.");
 
     private HttpStatus status;
     private String message;

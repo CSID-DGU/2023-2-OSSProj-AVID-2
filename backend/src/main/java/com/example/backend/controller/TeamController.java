@@ -1,5 +1,6 @@
 package com.example.backend.controller;
 
+import com.example.backend.controller.request.AddUserToTeamRequestDTO;
 import com.example.backend.controller.request.CreateTeamRequestDTO;
 import com.example.backend.controller.response.Response;
 import com.example.backend.controller.response.UserLoginResponseDTO;
@@ -8,10 +9,7 @@ import com.example.backend.entity.TeamEntity;
 import com.example.backend.entity.UserEntity;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.service.TeamService;
-import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,16 +70,24 @@ public class TeamController {
     }
 
     // 팀원 추가(이렇게 쓰고 싶지 않다...
-    @PostMapping("/addUser")
-    public ResponseEntity<String> addUserToTeam(@RequestParam Long userId, @RequestParam Long teamId, @RequestParam Long subjectId) {
-        try {
-            teamService.addUserToTeam(userId, teamId, subjectId);
-            return ResponseEntity.ok("팀원 추가 성공");
-        } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+//    @PostMapping("/addUser")
+//    public ResponseEntity<String> addUserToTeam(@RequestParam Long userId, @RequestParam Long teamId, @RequestParam Long subjectId) {
+//        try {
+//            teamService.addUserToTeam(userId, teamId, subjectId);
+//            return ResponseEntity.ok("팀원 추가 성공");
+//        } catch (NotFoundException e) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+//        }
+//    }
+
+    // 팀원 추가 (보완)
+    @PostMapping("/{teamId}/addUser")
+    public Response<Void> addUserToTeamV1(@PathVariable Long teamId, @RequestBody AddUserToTeamRequestDTO requestDTO) {
+        teamService.addUserToTeamV1(requestDTO, teamId);
+        return Response.success();
     }
 
+    // 본인 팀 리스트
     @GetMapping("/list")
     public Response<List<UserTeamResponseDTO>> getTeamList(HttpSession session) {
         UserLoginResponseDTO loginUser = (UserLoginResponseDTO) session.getAttribute("loginUser");
