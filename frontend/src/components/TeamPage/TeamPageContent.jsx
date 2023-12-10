@@ -1,8 +1,9 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { Link } from "react-router-dom";
 import TeamCalendar from "../Calendar/TeamCalendar";
 import styled from "styled-components";
 import AddBtn from "../Calendar/AddTodo";
+import API from "../../api/axios";
 
 const WrapperContainer = styled.div`
   position: relative;
@@ -45,6 +46,33 @@ const Dropdown = styled.select`
   margin-top: 40px;
 `;
 const TeamPage = () => {
+  const [teamList, setTeamList] = useState([]);
+  const [selectedTeam, setSelectedTeam] = useState({});
+
+  useEffect(() => {
+    const fetchTeamList = async () => {
+      try {
+        const response = await API.get("/api/team/list");
+        setTeamList(response.data.result);
+        // Set the default selected team (you can modify this based on your requirements)
+        if (response.data.result.length > 0) {
+          setSelectedTeam(response.data.result[0]);
+        }
+      } catch (error) {
+        console.error("Error fetching team list:", error);
+      }
+    };
+
+    fetchTeamList();
+  }, []);
+
+  const handleDropdownChange = (e) => {
+    // 드롭다운에서 선택된 팀의 정보 객체를 가져와서 설정
+    const selectedTeamInfo = teamList.find((team) => team.subjectName === e.target.value);
+    setSelectedTeam(selectedTeamInfo);
+    console.log(selectedTeamInfo)
+  };
+
   return (
     <WrapperContainer>
       <PagemodeSel>
@@ -52,14 +80,19 @@ const TeamPage = () => {
       </PagemodeSel>
       <Pagemode>팀 활동</Pagemode>
       <TodoContainer>
-        <Dropdown>
-          <option value="option1">오픈소스 소프트웨어</option>
-          <option value="option2">자료구조와 알고리즘 1</option>
-          <option value="option3">융합소프트웨어</option>
+        <Dropdown
+          value={selectedTeam.subjectName || ""} // 팀 이름으로 초기화
+          onChange={handleDropdownChange}
+        >
+          {teamList.map((team, index) => (
+            <option key={index} value={team.subjectName}>
+              {team.subjectName}
+            </option>
+          ))}
         </Dropdown>
-        <AddBtn currentPage="team"/>
+        <AddBtn currentPage="team" currentTeam={selectedTeam}/>
       </TodoContainer>
-      <TeamCalendar />
+      <TeamCalendar selectedTeam={selectedTeam} />
     </WrapperContainer>
   );
 };
