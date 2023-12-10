@@ -55,15 +55,6 @@ public class TeamService {
         return userTeamRepository.findUserInfoByTeamId(teamId);
     }
 
-    // 팀 생성
-    public TeamEntity createTeam(SubjectEntity subject) {
-        TeamEntity team = TeamEntity.builder()
-                .subject(subject)
-                .build();
-
-        return teamRepository.save(team);
-    }
-
     // 팀 생성 보완(유저 추가)
     public TeamEntity createTeamAndAddUser(CreateTeamRequestDTO requestDTO, UserEntity user) {
         //과목 정보 가져오기
@@ -92,25 +83,6 @@ public class TeamService {
         return savedTeam;
     }
 
-    // 팀원 추가
-//    public void addUserToTeam(Long userId, Long teamId, Long subjectId) throws NotFoundException {
-//        UserEntity user = userRepository.findById(userId)
-//                .orElseThrow(() -> new UsernameNotFoundException("유저를 찾을 수 없습니다. ID: " + userId));
-//
-//        TeamEntity team = teamRepository.findById(teamId)
-//                .orElseThrow(() -> new NotFoundException("팀을 찾을 수 없습니다. ID: " + teamId));
-//
-//        // 팀에 유저가 이미 존재하는지 확인
-//        if (!userTeamRepository.existsByUserAndTeam(user, subjectId)) {
-//            UserTeamEntity userTeam = UserTeamEntity.builder()
-//                    .user(user)
-//                    .team(team)
-//                    .build();
-//
-//            userTeamRepository.save(userTeam);
-//        }
-//    }
-
     @Transactional
     public List<UserTeamResponseDTO> getTeamList(UserLoginResponseDTO loginUser) {
         UserEntity user = userRepository
@@ -134,7 +106,7 @@ public class TeamService {
     }
 
     public void addUserToTeamV1(AddUserToTeamRequestDTO requestDTO, Long teamId) {
-// requestDTO에서 필요한 정보 추출
+        // requestDTO에서 필요한 정보 추출
         Long userId = requestDTO.getUserId();
         // 그 외에 필요한 정보가 있다면 DTO에 추가해서 여기서 사용
 

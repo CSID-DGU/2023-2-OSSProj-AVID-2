@@ -115,14 +115,6 @@ public class UserService implements UserDetailsService {
         return UserSubjectResponseDTO.of(user.getId(), userSubjectRepository.findByUser(user));
     }
 
-//    public UserSubjectResponseDTO getSubjects(UserLoginResponseDTO loginUser) {
-//        UserEntity user = userRepository
-//                .findByUserID(loginUser.getUserID())
-//                .orElseThrow(() -> new Exception(ErrorCode.INVALID_LOGIN));
-//
-//        return UserSubjectResponseDTO.of(user.getId(), userSubjectRepository.findByUser(user));
-//    }
-
     public List<String> getSubjectNames(UserLoginResponseDTO loginUser) {
         UserEntity user = userRepository
                 .findByUserID(loginUser.getUserID())
