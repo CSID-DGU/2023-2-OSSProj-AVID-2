@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import API from '../../api/axios';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 function LecturePage() {
   const [lectureList, setLectureList] = useState([]);
   const [selectedLectures, setSelectedLectures] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getLectureList();
@@ -12,8 +13,9 @@ function LecturePage() {
 
   const getLectureList = async () => {
     try {
-      const response = await API.get("/api/api/user-subjects");
+      const response = await API.get("/api/subjects");
       setLectureList(response.data);
+      console.log(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -44,7 +46,7 @@ function LecturePage() {
   
       // 성공 시 처리
       console.log("강의 등록 성공", response.data);
-      Navigate("/mypage")
+      navigate("/")
       
     } catch (error) {
       // 실패 시 처리
