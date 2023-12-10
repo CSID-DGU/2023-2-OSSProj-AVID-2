@@ -47,7 +47,7 @@ const DateInput = styled(DatePicker)`
   color: rgba(0, 0, 0, 0.5);
 `;
 
-const AddBtn = () => {
+const AddBtn = ({ currentPage }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -57,17 +57,24 @@ const AddBtn = () => {
   const handleAddEvent = async (e) => {
     e.preventDefault();
 
+    let apiEndpoint = "/api/schedule/personal";
+
+    if (currentPage === "team") {
+      apiEndpoint = "/api/schedule/team";
+    }
+
     const data = {
       title: title,
       content: content,
-      scheduleType: "SCHEDULE",
+      scheduleType: currentPage === "team" ? "TEAM" : "SCHEDULE",
       startDate: startDate ? startDate.toISOString() : null,
       endDate: endDate ? endDate.toISOString() : null,
     };
 
     try {
-      const response = await API.post("/api/schedule/personal", data);
+      const response = await API.post(apiEndpoint, data);
       console.log(response.data);
+      console.log(data);
     } catch (error) {
       console.error(error);
     }

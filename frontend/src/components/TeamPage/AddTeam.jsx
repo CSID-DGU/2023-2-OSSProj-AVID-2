@@ -49,11 +49,13 @@ const AddTeam = () => {
   const [AddTeamModalOpen, setAddTeamModalOpen] = useState(false);
   const [classTeamList, setClassTeamList] = useState([]); //팀이 생성된 과목리스트
   const [newTeamName, setNewTeamName] = useState(""); //각 팀의 이름
-  const [selectedTeam, setSelectedTeam] = useState(""); //현재 정보 표시되고 있는 팀
+  const [selectedTeam, setSelectedTeam] = useState({}); //현재 정보 표시되고 있는 팀
   const [teamMembers, setTeamMembers] = useState({});
-  const [selectedLecture, setSelectedLecture] = useState("");
+  const [selectedLecture, setSelectedLecture] = useState({});
   const [lectureList, setLectureList] = useState([]);
-  const [teamList, setTeamList] = useState([]);
+  const [teamList, setTeamList] = useState([{}]);
+
+  const [students, setStudents] = useState([]);
 
   
   const getLectureList = async () => {
@@ -73,9 +75,28 @@ const AddTeam = () => {
     getTeamList();
   }, []);
 
-  const handleClickAddMember = () => {
-    setAddMemberModalOpen((prev) => !prev);
+  const fetchStudents = async (selectedTeam) => {
+    console.log("Fetching students for subject ID:", selectedTeam);
+    
+    try {
+      const response = await API.get(`/api/user-subjects/${selectedTeam.subjectId}/students`);
+      if (response.data.resultCode === "SUCCESS") {
+        setStudents(response.data.result);
+        console.log("Students:", response.data.result);
+      }
+    } catch (error) {
+      console.error("Error fetching students:", error);
+    }
   };
+  
+  // 모달이 열릴 때 학생 목록 불러오기 (예: handleClickAddMember 함수 내부)
+  const handleClickAddMember = () => {
+    // 선택한 강좌의 ID를 이용해서 학생 목록을 불러옴
+    console.log("Selected TEAM:", selectedTeam);
+    fetchStudents(selectedTeam);
+    setAddMemberModalOpen(true);
+  };
+
   const handleClickAddTeam = () => {
     setAddTeamModalOpen((prev) => !prev);
   };
@@ -116,15 +137,27 @@ const AddTeam = () => {
     }
   };
 
-  const handleSelectTeam = (teamName) => {
-    console.log("Selected Team Name:", teamName); // 확인을 위한 로그 추가
-    setSelectedTeam(teamName);
-    // Create an empty array for the team members if it doesn't exist
-    if (!teamMembers[teamName]) {
-      setTeamMembers((prevMembers) => ({
-        ...prevMembers,
-        [teamName]: [],
-      }));
+  const handleSelectTeam = async (team) => {
+    console.log("Selected Team Name:", team.subjectName);
+    setSelectedTeam(team);
+    // 호출할 API 엔드포인트 및 팀에 대한 정보 전달
+    const apiEndpoint = `/api/team/${team.teamId}/userInfo`;
+
+    try {
+        // API 호출
+        const response = await API.get(apiEndpoint);
+
+        // API 응답에서 팀 멤버 정보 추출
+        const teamMembersData = response.data;
+        console.log("Team Members:", teamMembersData);
+        // 추출한 정보를 state에 반영
+        setTeamMembers((prevMembers) => ({
+            ...prevMembers,
+            [team.subjectName]: teamMembersData,
+        }));
+
+    } catch (error) {
+        console.error("Error fetching team members:", error);
     }
 };
 
@@ -137,6 +170,8 @@ const AddTeam = () => {
       setAddMemberModalOpen(false);
     }
   };
+
+  
 
   return (
     <>
@@ -154,7 +189,7 @@ const AddTeam = () => {
             {teamList.map((classTeam, index) => (
               <s.ClassTeamList
                 key={index}
-                onClick={() => handleSelectTeam(classTeam.subjectName)}
+                onClick={() => handleSelectTeam(classTeam)}
               >
                 {classTeam.subjectName}
               </s.ClassTeamList>
@@ -164,12 +199,12 @@ const AddTeam = () => {
           <s.SelectedClassContainer>
             {selectedTeam && (
               <>
-                <s.TeamName>{selectedTeam}</s.TeamName>
+                <s.TeamName>{selectedTeam.subjectName}</s.TeamName>
                 <s.TeamMember>
                   팀원:
-                  {teamMembers[selectedTeam] &&
-                    teamMembers[selectedTeam].map((member, index) => (
-                      <s.TeamMemberList key={index}>{member}</s.TeamMemberList>
+                  {teamMembers[selectedTeam.subjectName] &&
+                    teamMembers[selectedTeam.subjectName].map((member, index) => (
+                      <s.TeamMemberList key={index}>{member.split(",")[1]}</s.TeamMemberList>
                     ))}
                 </s.TeamMember>
               </>

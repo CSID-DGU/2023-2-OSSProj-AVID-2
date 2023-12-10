@@ -37,7 +37,7 @@ const MyPage = () => {
       <PagemodeSel>
         <Link to="/teampage">팀 활동</Link>
       </PagemodeSel>
-      <AddBtn />
+      <AddBtn currentPage="personal"/>
       <Calendar />
       <Notice />
     </WrapperContainer>
