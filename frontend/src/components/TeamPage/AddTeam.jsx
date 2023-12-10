@@ -57,6 +57,7 @@ const AddTeam = () => {
 
   const [students, setStudents] = useState([]);
 
+  const [selectedMember, setSelectedMember] = useState({});
   
   const getLectureList = async () => {
     try {
@@ -161,15 +162,51 @@ const AddTeam = () => {
     }
 };
 
+  const handleSelectMember = (member) => {
+    console.log("Selected Member:", member);
+    setSelectedMembers(member);
+  };
+
   const handleAddTeamMember = (memberName) => {
     if (selectedTeam && memberName.trim() !== "") {
       setTeamMembers((prevMembers) => ({
         ...prevMembers,
         [selectedTeam]: [...prevMembers[selectedTeam], memberName],
       }));
+
       setAddMemberModalOpen(false);
     }
   };
+
+  const handleAddTeamMembers = async () => {
+    if (selectedTeam && selectedMember) {
+      // 선택한 팀원을 서버로 보내는 요청 보내기
+      const memberRequest = {
+        userId: Number(selectedMember),
+        teamId: selectedTeam.teamId,
+        subjectId: selectedTeam.subjectId,
+      };
+      console.log(memberRequest)
+      // 서버로 팀원을 추가하는 요청 보내기
+      try {
+        const response = await API.post(`/api/team/${selectedTeam.teamId}/addUser`, memberRequest);
+        console.log(response);
+        if (response.data.resultCode === "SUCCESS") {
+          // 성공적으로 추가되었을 때의 처리
+          console.log("Member added successfully");
+          setAddMemberModalOpen(false);
+        } else {
+          // 추가 실패 시의 처리
+          console.error("Failed to add member");
+          alert("팀원 추가에 실패했습니다.");
+        }
+      } catch (error) {
+        console.error(error);
+        alert("팀원 추가에 실패했습니다.");
+      }
+    }
+  };
+
 
   
 
@@ -243,17 +280,24 @@ const AddTeam = () => {
             <Modal
               isOpen={AddMemberModalOpen}
               style={addMemberModalStyles}
-              onRequestClose={handleClickAddMember}
+              onRequestClose={handleAddTeamMembers}
               ariaHideApp={false}
             >
               New Team Member:
-              <input
+              {/* <input
                 type="text"
                 id="newTeamMember"
                 value={newTeamName}
                 onChange={(e) => setNewTeamName(e.target.value)}
-              />
-              <s.sbutton onClick={() => handleAddTeamMember(newTeamName)}>
+              /> */}
+
+              <select value={selectedMember} onChange={(e)=>setSelectedMember(e.target.value)}>
+                <option value="" disabled>Select a student</option>
+                  {students.map((student, index) => (
+                      <option key={index} value={student.userID}>{student.username}</option>
+                  ))}
+              </select>
+              <s.sbutton onClick={() => handleAddTeamMembers()}>
                 Add Team Member
               </s.sbutton>
             </Modal>

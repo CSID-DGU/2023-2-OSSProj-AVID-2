@@ -8,9 +8,10 @@ import lombok.Getter;
 public class UserTeamResponseDTO {
     private Long userId;
     private Long teamId;
+    private Long subjectId;
     private String subjectName;
 
-    public static UserTeamResponseDTO of(Long userId, Long teamId, String subjectName) {
-        return new UserTeamResponseDTO(userId, teamId, subjectName);
+    public static UserTeamResponseDTO of(Long userId, Long teamId, Long subjectId, String subjectName) {
+        return new UserTeamResponseDTO(userId, teamId,subjectId, subjectName);
     }
 }

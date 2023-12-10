@@ -2,16 +2,18 @@ package com.example.backend.controller;
 
 import com.example.backend.controller.request.CreateScheduleRequestDTO;
 import com.example.backend.controller.request.ModifyScheduleRequestDTO;
-import com.example.backend.controller.response.*;
-import com.example.backend.entity.TeamEntity;
+import com.example.backend.controller.response.Response;
+import com.example.backend.controller.response.ScheduleDetailResponseDTO;
+import com.example.backend.controller.response.ScheduleTeamResponseDTO;
 import com.example.backend.entity.TeamScheduleEntity;
 import com.example.backend.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.YearMonth;
 import java.util.List;
@@ -23,7 +25,7 @@ import java.util.List;
 public class TeamScheduleController {
     private final ScheduleService scheduleService;
 
-    @PostMapping("")
+    @PostMapping("/{teamId}/create")
     public Response<Void> createSchedule(@RequestBody CreateScheduleRequestDTO requestDTO, @PathVariable Long teamId) throws NotFoundException {
         scheduleService.createTeamSchedule(requestDTO, teamId);
         return Response.success();
@@ -41,7 +43,7 @@ public class TeamScheduleController {
         return Response.success();
     }
 
-    @GetMapping("")
+    @GetMapping("/{teamId}/list")
     public Response<ScheduleTeamResponseDTO> getSchedule(@RequestParam("month") @DateTimeFormat(pattern = "yyyy-MM") YearMonth yearMonth, @PathVariable Long teamId) throws NotFoundException {
         Month month = yearMonth.getMonth();
         int year = yearMonth.getYear();
@@ -54,8 +56,9 @@ public class TeamScheduleController {
     }
 
     // 투두 반환
+    @Transactional
     @GetMapping("/Todolist")
-    public List<TeamScheduleEntity> getToDoList() {
-        return scheduleService.getToDoList();
+    public List<TeamScheduleEntity> getToDoList(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime date) {
+        return scheduleService.getToDoList(date);
     }
 }
