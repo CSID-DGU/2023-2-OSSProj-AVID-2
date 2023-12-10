@@ -25,12 +25,6 @@ public class TeamController {
     @Autowired
     private UserRepository userRepository;
 
-    // 각 과목 수강 학생 + /api/user-subjects/{subjectId}/students 경로로 변경함 아래 코드 미사용
-    @GetMapping("/userNames/{subjectId}")
-    public List<String> getUserNamesBySubjectId(@PathVariable Long subjectId) {
-        return teamService.getUserNamesBySubjectId(subjectId);
-    }
-
     // 유저의 팀원 정보
     @GetMapping("/{userId}/userNames")
     public String getSubjectNameByUserId(@PathVariable Long userId) {
@@ -50,12 +44,6 @@ public class TeamController {
         return teamService.getSubjectByUserId(userId);
     }
 
-//    // 팀 생성
-//    @PostMapping("/create")
-//    public TeamEntity createTeam(@RequestBody SubjectEntity subject) {
-//        return teamService.createTeam(subject);
-//    }
-
     // 팀 생성 보완(유저 추가)
     @PostMapping("/create")
     public Response<TeamEntity> createTeam(@RequestBody CreateTeamRequestDTO requestDTO, HttpSession session) {
@@ -68,17 +56,6 @@ public class TeamController {
         return Response.success(teamService.createTeamAndAddUser(requestDTO, user));
 
     }
-
-    // 팀원 추가 (미사용)
-//    @PostMapping("/addUser")
-//    public ResponseEntity<String> addUserToTeam(@RequestParam Long userId, @RequestParam Long teamId, @RequestParam Long subjectId) {
-//        try {
-//            teamService.addUserToTeam(userId, teamId, subjectId);
-//            return ResponseEntity.ok("팀원 추가 성공");
-//        } catch (NotFoundException e) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-//        }
-//    }
 
     // 팀원 추가 (보완)
     @PostMapping("/{teamId}/addUser")
