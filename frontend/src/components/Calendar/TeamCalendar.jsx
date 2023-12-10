@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Fullcalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -11,6 +11,11 @@ function TeamCalendar() {
     { title: "EX1", start: new Date("2023-10-29") },
     { title: "EX2", start: new Date("2023-10-30") },
   ];
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+  const handleDateClick = (info) => {
+    setSelectedDate(info.date);
+  };
 
   const renderEventContent = (eventInfo) => {
     return (
@@ -36,6 +41,7 @@ function TeamCalendar() {
           height={"85vh"}
           width={"85vh"}
           locale={"ko"}
+          dateClick={handleDateClick} // Add dateClick handler
         />
       </s.TeamCalendarContainer>
       <s.ListContainer>

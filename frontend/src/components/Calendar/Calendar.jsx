@@ -10,6 +10,12 @@ function Calendar() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [allevents, setAllEvents] = useState([]);
 
+  const convertToKST = (isoString) => {
+    const date = new Date(isoString);
+    const kst = new Date(date.getTime() + 9 * 60 * 60 * 1000); // UTC+9
+    return kst.toISOString();
+  };
+
   useEffect(() => {
     const fetchEvents = async () => {
       try {
@@ -43,24 +49,30 @@ function Calendar() {
 
   const eventsForFullCalendar = allevents.map((event) => ({
     title: event.title,
-    start: new Date(event.startDate),
-    end: new Date(event.endDate),
+    start: convertToKST(event.startDate),
+    end: convertToKST(event.endDate),
     backgroundColor: event.scheduleType === "SCHEDULE" ? "#e61919" : "#006cb7",
     allDay: true,
   }));
 
-  const dayRender = (info) => {
-    const dayOfWeek = info.day.getDate(); // 현재 날짜의 요일을 가져옴 (0: 일요일, 1: 월요일, ..., 6: 토요일)
-    console.log("Day of week:", dayOfWeek);
-    // 날짜에 따라 스타일을 지정
-    if (dayOfWeek === 0) {
-      info.el.style.backgroundColor = 'red'; // 일요일
-    } else if (dayOfWeek === 6) {
-      info.el.style.backgroundColor = 'blue'; // 토요일
-    } else {
-      info.el.style.backgroundColor = 'black'; // 평일
-    }
-  };
+  eventsForFullCalendar.forEach(event => {
+    const endDate = new Date(event.end);
+    endDate.setDate(endDate.getDate() + 1);
+    event.end = endDate.toISOString();
+  });
+
+  // const dayRender = (info) => {
+  //   const dayOfWeek = info.day.getDate(); // 현재 날짜의 요일을 가져옴 (0: 일요일, 1: 월요일, ..., 6: 토요일)
+  //   console.log("Day of week:", dayOfWeek);
+  //   // 날짜에 따라 스타일을 지정
+  //   if (dayOfWeek === 0) {
+  //     info.el.style.backgroundColor = 'red'; // 일요일
+  //   } else if (dayOfWeek === 6) {
+  //     info.el.style.backgroundColor = 'blue'; // 토요일
+  //   } else {
+  //     info.el.style.backgroundColor = 'black'; // 평일
+  //   }
+  // };
 
   return (
     <s.CalendarContainer>
@@ -78,7 +90,7 @@ function Calendar() {
         width={"85vh"}
         locale={"ko"}
         dateClick={handleDateClick} // Add dateClick handler
-        dayRender={dayRender}
+        
       />
     </s.CalendarContainer>
   );

@@ -57,7 +57,7 @@ const TeamPage = () => {
           <option value="option2">자료구조와 알고리즘 1</option>
           <option value="option3">융합소프트웨어</option>
         </Dropdown>
-        <AddBtn />
+        <AddBtn currentPage="team"/>
       </TodoContainer>
       <TeamCalendar />
     </WrapperContainer>
