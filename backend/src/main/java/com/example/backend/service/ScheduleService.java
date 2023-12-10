@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
@@ -176,8 +177,8 @@ public class ScheduleService {
     }
 
     // 투두리스트
-    public List<TeamScheduleEntity> getToDoList() {
-        LocalDate currentDate = LocalDate.now();
+    public List<TeamScheduleEntity> getToDoList(LocalDateTime currentDate) {
+
         return teamScheduleRepository.findByDate(currentDate);
     }
 
