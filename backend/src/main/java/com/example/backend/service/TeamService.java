@@ -96,8 +96,9 @@ public class TeamService {
         for (UserTeamEntity userTeamEntity : userTeamEntities) {
             UserTeamResponseDTO responseDTO = UserTeamResponseDTO.of(
                     user.getId(),
-                    userTeamEntity.getTeam().getId(),  // Assuming there is a getTeam() method in UserTeamEntity
-                    userTeamEntity.getTeam().getSubject().getSubjectName()  // Assuming there is a getSubject() method in TeamEntity
+                    userTeamEntity.getTeam().getId(),
+                    userTeamEntity.getTeam().getSubject().getId(),
+                    userTeamEntity.getTeam().getSubject().getSubjectName()
             );
             responseDTOs.add(responseDTO);
         }
