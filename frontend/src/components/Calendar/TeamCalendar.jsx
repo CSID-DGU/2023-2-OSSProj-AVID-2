@@ -5,13 +5,59 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import * as s from "./Styled.jsx";
 import AddTeam from "../TeamPage/AddTeam.jsx";
+import API from "../../api/axios.jsx";
 
-function TeamCalendar() {
-  const events = [
-    { title: "EX1", start: new Date("2023-10-29") },
-    { title: "EX2", start: new Date("2023-10-30") },
-  ];
+function TeamCalendar({ selectedTeam }) {
+  const [events, setEvents] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
+
+  const [todoList, setTodoList] = useState([]);
+
+  const convertToKST = (isoString) => {
+    const date = new Date(isoString);
+    const kst = new Date(date.getTime() + 9 * 60 * 60 * 1000); // UTC+9
+    return kst.toISOString();
+  };
+
+  useEffect(() => {
+    const fetchTeamEvents = async () => {
+      console.log(selectedTeam)
+      try {
+        if (!selectedTeam || !selectedTeam.teamId) {
+          setEvents([]);
+          return;
+        }
+        const formattedMonth = selectedDate.toISOString().split("T")[0].split("-").slice(0, 2).join("-");
+        const response = await API.get(`/api/schedule/team/${selectedTeam.teamId}/list`,{ params: { month: formattedMonth } });
+        console.log("Team Events:", response.data);
+
+        if (response.data.resultCode === "SUCCESS") {
+          const events = response.data.result.teamSchedule
+          console.log("All Events:", events);
+          setEvents(events);
+          
+        }
+        const currentDate = new Date().toISOString();
+        console.log("Current Date:", currentDate);
+        const todoResponse = await API.get("/api/schedule/team/Todolist",{
+          params: {
+            date: currentDate,
+          },
+        });
+        if (todoResponse.data.resultCode === "SUCCESS") {
+          const todoList = todoResponse.data.result;
+          console.log("Todo List:", todoList);
+          setTodoList(todoList);
+        }
+
+
+      } catch (error) {
+        console.error("Error fetching team events:", error);
+      }
+    };
+
+    fetchTeamEvents();
+  }, [selectedTeam, selectedDate]);
 
   const handleDateClick = (info) => {
     setSelectedDate(info.date);
@@ -25,6 +71,20 @@ function TeamCalendar() {
     );
   };
 
+  const eventsForFullCalendar = events.map((event) => ({
+    title: event.title,
+    start: convertToKST(event.startDate),
+    end: convertToKST(event.endDate),
+    backgroundColor: event.scheduleType === "SCHEDULE" ? "#e61919" : "#006cb7",
+    allDay: true,
+  }));
+
+  eventsForFullCalendar.forEach(event => {
+    const endDate = new Date(event.end);
+    endDate.setDate(endDate.getDate() + 1);
+    event.end = endDate.toISOString();
+  });
+
   return (
     <s.TeamWrapper>
       <s.TeamCalendarContainer>
@@ -36,7 +96,7 @@ function TeamCalendar() {
             center: "title",
             end: "",
           }}
-          events={events}
+          events={eventsForFullCalendar}
           eventContent={renderEventContent}
           height={"85vh"}
           width={"85vh"}
@@ -45,41 +105,15 @@ function TeamCalendar() {
         />
       </s.TeamCalendarContainer>
       <s.ListContainer>
-        <s.ListItemContainer value="팀과제">
-          <s.Checkbox type="checkbox" />
-          <s.AttributeLabel>활동 명</s.AttributeLabel>
-          <s.ProgressLabel>진행중</s.ProgressLabel>
-          <s.CategoryLabel>팀 과제</s.CategoryLabel>
-          <s.EnddateLabel>마감일</s.EnddateLabel>
-        </s.ListItemContainer>
-        <s.ListItemContainer value="팀플">
-          <s.Checkbox type="checkbox" />
-          <s.AttributeLabel>프로젝트 진행</s.AttributeLabel>
-          <s.ProgressLabel>진행중</s.ProgressLabel>
-          <s.CategoryLabel>과제</s.CategoryLabel>
-          <s.EnddateLabel>23-12-25</s.EnddateLabel>
-        </s.ListItemContainer>
-        <s.ListItemContainer value="과제">
-          <s.Checkbox type="checkbox" />
-          <s.AttributeLabel>과제</s.AttributeLabel>
-          <s.ProgressLabel>진행중</s.ProgressLabel>
-          <s.CategoryLabel>과제</s.CategoryLabel>
-          <s.EnddateLabel>23-12-25</s.EnddateLabel>
-        </s.ListItemContainer>
-        <s.ListItemContainer value="발표">
-          <s.Checkbox type="checkbox" />
-          <s.AttributeLabel>프로젝트 발표</s.AttributeLabel>
-          <s.ProgressLabel>진행중</s.ProgressLabel>
-          <s.CategoryLabel>발표</s.CategoryLabel>
-          <s.EnddateLabel>23-12-25</s.EnddateLabel>
-        </s.ListItemContainer>
-        <s.ListItemContainer value="팀플">
-          <s.Checkbox type="checkbox" />
-          <s.AttributeLabel>프로젝트 시연</s.AttributeLabel>
-          <s.ProgressLabel>진행중</s.ProgressLabel>
-          <s.CategoryLabel>팀플</s.CategoryLabel>
-          <s.EnddateLabel>23-12-25</s.EnddateLabel>
-        </s.ListItemContainer>
+      {todoList.map((todo) => (
+          <s.ListItemContainer key={todo.id} value={todo.category}>
+            <s.Checkbox type="checkbox" />
+            <s.AttributeLabel>{todo.activityName}</s.AttributeLabel>
+            <s.ProgressLabel>{todo.progress}</s.ProgressLabel>
+            <s.CategoryLabel>{todo.category}</s.CategoryLabel>
+            <s.EnddateLabel>{todo.endDate}</s.EnddateLabel>
+          </s.ListItemContainer>
+        ))}
         <AddTeam />
       </s.ListContainer>
     </s.TeamWrapper>

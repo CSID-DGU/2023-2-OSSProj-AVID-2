@@ -20,10 +20,33 @@ function Calendar() {
     const fetchEvents = async () => {
       try {
         const formattedMonth = selectedDate.toISOString().split("T")[0].split("-").slice(0, 2).join("-");
-        const response = await API.get("/api/schedule/personal", { params: { month: formattedMonth } });
-  
-        if (response.data.resultCode === "SUCCESS") {
-          const allEvents = response.data.result.personalSchedule.concat(response.data.result.task);
+        
+        // Fetch personal schedule
+        const personalScheduleResponse = await API.get("/api/schedule/personal", { params: { month: formattedMonth } });
+
+        // Fetch user's team information
+        const userTeamsResponse = await API.get("/api/team/list");
+
+        // Fetch team schedules for each team
+        const teamSchedules = await Promise.all(
+          userTeamsResponse.data.result.map(async (team) => {
+            const teamScheduleResponse = await API.get(`/api/schedule/team/${team.teamId}/list`, { params: { month: formattedMonth } });
+            return teamScheduleResponse.data.result.teamSchedule;
+          })
+        );
+
+        if (personalScheduleResponse.data.resultCode === "SUCCESS") {
+          const personalSchedule = personalScheduleResponse.data.result.personalSchedule;
+          const taskSchedule = personalScheduleResponse.data.result.task;
+
+          // Combine personal schedule and task
+          const allEvents = personalSchedule.concat(taskSchedule);
+
+          // Combine team schedules with personal schedule
+          teamSchedules.forEach((teamSchedule) => {
+            allEvents.push(...teamSchedule);
+          });
+
           console.log("All Events:", allEvents);
           setAllEvents(allEvents);
         }
@@ -31,7 +54,7 @@ function Calendar() {
         console.error("Error fetching events:", error);
       }
     };
-  
+
     fetchEvents();
   }, [selectedDate]);
 

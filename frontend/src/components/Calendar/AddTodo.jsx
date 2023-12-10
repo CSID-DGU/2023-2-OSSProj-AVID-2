@@ -47,7 +47,7 @@ const DateInput = styled(DatePicker)`
   color: rgba(0, 0, 0, 0.5);
 `;
 
-const AddBtn = ({ currentPage }) => {
+const AddBtn = ({ currentPage, currentTeam }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -58,18 +58,21 @@ const AddBtn = ({ currentPage }) => {
     e.preventDefault();
 
     let apiEndpoint = "/api/schedule/personal";
-
-    if (currentPage === "team") {
-      apiEndpoint = "/api/schedule/team";
-    }
-
+    console.log(currentPage);
     const data = {
       title: title,
       content: content,
-      scheduleType: currentPage === "team" ? "TEAM" : "SCHEDULE",
       startDate: startDate ? startDate.toISOString() : null,
       endDate: endDate ? endDate.toISOString() : null,
     };
+
+    if (currentPage === "team") {
+      console.log(currentTeam);
+      apiEndpoint = `/api/schedule/team/${currentTeam.teamId}/create`;
+    } else {
+      // personal 페이지인 경우에만 scheduleType 추가
+      data.scheduleType = "SCHEDULE";
+    }
 
     try {
       const response = await API.post(apiEndpoint, data);
