@@ -52,7 +52,7 @@ public class ScheduleService {
                 .collect(Collectors.toList());
 
         List<UserSubjectEntity> userSubjects = userSubjectRepository.findAllByUser(user);
-        List<TaskResponseDTO> tSchedules = new ArrayList<>();
+        List<TaskResponseDTO> sSchedules = new ArrayList<>();
         for (UserSubjectEntity userSubject : userSubjects) {
             List<TaskEntity> task = em
                     .createQuery("select c from TaskEntity c where c.subject = :subject and(c.startYear = :startYear or c.endYear = : endYear) and (c.startMonth = :startMonth or c.endMonth = :endMonth)", TaskEntity.class)
@@ -63,10 +63,10 @@ public class ScheduleService {
                     .setParameter("endMonth", month)
                     .getResultList();
             for (TaskEntity schedule : task) {
-                tSchedules.add(TaskResponseDTO.fromTask(schedule));
+                sSchedules.add(TaskResponseDTO.fromTask(schedule));
             }
         }
-        return new ScheduleResponseDTO(pSchedules, tSchedules);
+        return new ScheduleResponseDTO(pSchedules, sSchedules);
     }
 
     // 개인 일정 생성, 수정, 삭제
@@ -179,6 +179,22 @@ public class ScheduleService {
     public List<TeamScheduleEntity> getToDoList() {
         LocalDate currentDate = LocalDate.now();
         return teamScheduleRepository.findByDate(currentDate);
+    }
+
+    public ScheduleTeamResponseDTO getTeamSchedule(Month month, int year, Long teamId) throws NotFoundException {
+        TeamEntity team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new NotFoundException("팀을 찾을 수 없습니다. ID: " + teamId));
+        List<TeamScheduleResponseDTO> tSchedules = em
+                .createQuery("select c from TeamScheduleEntity c where c.team = :team and(c.startYear = :startYear or c.endYear = : endYear) and (c.startMonth = :startMonth or c.endMonth = :endMonth)", TeamScheduleEntity.class)
+                .setParameter("team", team)
+                .setParameter("startYear", year)
+                .setParameter("endYear", year)
+                .setParameter("startMonth", month)
+                .setParameter("endMonth", month)
+                .getResultList()
+                .stream().map(TeamScheduleResponseDTO::fromSchedule)
+                .collect(Collectors.toList());
+        return new ScheduleTeamResponseDTO(tSchedules);
     }
 
 }
