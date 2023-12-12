@@ -19,10 +19,18 @@ function Calendar() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const formattedMonth = selectedDate.toISOString().split("T")[0].split("-").slice(0, 2).join("-");
-        
+        const formattedMonth = selectedDate
+          .toISOString()
+          .split("T")[0]
+          .split("-")
+          .slice(0, 2)
+          .join("-");
+
         // Fetch personal schedule
-        const personalScheduleResponse = await API.get("/api/schedule/personal", { params: { month: formattedMonth } });
+        const personalScheduleResponse = await API.get(
+          "/api/schedule/personal",
+          { params: { month: formattedMonth } }
+        );
 
         // Fetch user's team information
         const userTeamsResponse = await API.get("/api/team/list");
@@ -30,13 +38,17 @@ function Calendar() {
         // Fetch team schedules for each team
         const teamSchedules = await Promise.all(
           userTeamsResponse.data.result.map(async (team) => {
-            const teamScheduleResponse = await API.get(`/api/schedule/team/${team.teamId}/list`, { params: { month: formattedMonth } });
+            const teamScheduleResponse = await API.get(
+              `/api/schedule/team/${team.teamId}/list`,
+              { params: { month: formattedMonth } }
+            );
             return teamScheduleResponse.data.result.teamSchedule;
           })
         );
 
         if (personalScheduleResponse.data.resultCode === "SUCCESS") {
-          const personalSchedule = personalScheduleResponse.data.result.personalSchedule;
+          const personalSchedule =
+            personalScheduleResponse.data.result.personalSchedule;
           const taskSchedule = personalScheduleResponse.data.result.task;
 
           // Combine personal schedule and task
@@ -78,7 +90,7 @@ function Calendar() {
     allDay: true,
   }));
 
-  eventsForFullCalendar.forEach(event => {
+  eventsForFullCalendar.forEach((event) => {
     const endDate = new Date(event.end);
     endDate.setDate(endDate.getDate() + 1);
     event.end = endDate.toISOString();
@@ -103,7 +115,7 @@ function Calendar() {
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView={"dayGridMonth"}
         headerToolbar={{
-          start: "today prev,next", // will normally be on the left. if RTL, will be on the right
+          start: "today prev next", // will normally be on the left. if RTL, will be on the right
           center: "title",
           end: "",
         }}
@@ -113,7 +125,6 @@ function Calendar() {
         width={"85vh"}
         locale={"ko"}
         dateClick={handleDateClick} // Add dateClick handler
-        
       />
     </s.CalendarContainer>
   );

@@ -10,13 +10,13 @@ export const TeamWrapper = styled.div`
 
 export const TeamCalendarContainer = styled.div`
   padding: 20px;
-  width: 60%;
+  width: 100%;
   height: 80%;
   position: relative;
 `;
 
 export const ListContainer = styled.div`
-  width: 50%;
+  width: 15%;
   height: 20px;
   margin-right: 100px;
   flex-direction: column;
@@ -235,9 +235,10 @@ export const AddTeamButton = styled.button`
   border: none;
   border-radius: 20%;
   padding: 0px;
-  width: 125px;
-  height: 125px;
+  width: 50px;
+  height: 50px;
   margin-top: 20px;
+  right: 10%;
 
   background-color: #4339f2;
   &:hover {
@@ -252,8 +253,8 @@ export const AddTeamButton = styled.button`
 `;
 
 export const img = styled.img`
-  width: 110px;
-  height: 110px;
+  width: 45px;
+  height: 45px;
 `;
 export const ClassTeamContainer = styled.div`
   width: 200px;
@@ -286,6 +287,13 @@ export const sbutton = styled.button`
   width: 100px;
   height: 50px;
   font-size: 15px;
+`;
+
+export const cbutton = styled.button`
+  width: 100px;
+  height: 50px;
+  font-size: 15px;
+  margin-top: auto;
 `;
 
 export const ClassTeamList = styled.button`
@@ -321,8 +329,6 @@ export const TeamMemberList = styled.div`
   margin-left: 20px;
 `;
 
-export const TeamMemo = styled.div``;
-
 export const SelectClassContainer = styled.div`
   width: 300px;
   height: 150px;
@@ -340,4 +346,11 @@ export const NewTeamLabel = styled.div`
   margin-left: 15px;
   color: rgba(0, 0, 0, 0.5);
   word-wrap: break-word;
+`;
+
+export const mbutton = styled.button`
+  width: 100px;
+  height: 50px;
+  font-size: 15px;
+  background-color: #c3b8b8;
 `;

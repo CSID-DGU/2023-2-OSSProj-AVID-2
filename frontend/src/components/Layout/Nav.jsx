@@ -12,12 +12,11 @@ export default function Nav() {
       console.log(response);
       if (response.data.resultCode === "SUCCESS") {
         setIsLoggedIn(false);
-      } 
+      }
     } catch (error) {
       window.location.reload();
     }
-  }
-  
+  };
 
   useEffect(() => {
     const checkLoginStatus = async () => {
@@ -38,7 +37,6 @@ export default function Nav() {
     checkLoginStatus();
   }, []);
 
-
   return (
     <s.Container>
       <Link to="/">
@@ -52,9 +50,9 @@ export default function Nav() {
           </s.User>
 
           <s.LoginedBtn onClick={handleLogout}>로그아웃</s.LoginedBtn>
-        <Link to="/mypage">  
-          <s.LoginedBtn> 마이페이지</s.LoginedBtn>
-        </Link>
+          <Link to="/mypage">
+            <s.LoginedBtn> 마이페이지</s.LoginedBtn>
+          </Link>
           <s.LoginedBtn>Webex 비밀번호 변경</s.LoginedBtn>
           <s.LectureBtn>강의실 선택</s.LectureBtn>
           <s.Language>HOME | ENG | CHN | JPN </s.Language>
