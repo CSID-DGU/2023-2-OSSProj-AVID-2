@@ -51,11 +51,11 @@ function TeamCalendar({ selectedTeam }) {
             date: currentDate,
           },
         });
-        if (todoResponse.data.resultCode === "SUCCESS") {
-          const todoList = todoResponse.data.result;
-          console.log("Todo List:", todoList);
-          setTodoList(todoList);
-        }
+        // if (todoResponse.data.resultCode === "SUCCESS") {
+        //   const todoList = todoResponse.data.result;
+        //   console.log("Todo List:", todoList);
+        //   setTodoList(todoList);
+        // }
       } catch (error) {
         console.error("Error fetching team events:", error);
       }
@@ -80,7 +80,7 @@ function TeamCalendar({ selectedTeam }) {
     title: event.title,
     start: convertToKST(event.startDate),
     end: convertToKST(event.endDate),
-    backgroundColor: event.scheduleType === "SCHEDULE" ? "#e61919" : "#006cb7",
+    backgroundColor: event.scheduleType === "SCHEDULE" ? "#ffc1cc" : "#A0D468",
     allDay: true,
   }));
 

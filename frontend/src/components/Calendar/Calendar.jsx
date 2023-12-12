@@ -86,7 +86,7 @@ function Calendar() {
     title: event.title,
     start: convertToKST(event.startDate),
     end: convertToKST(event.endDate),
-    backgroundColor: event.scheduleType === "SCHEDULE" ? "#e61919" : "#006cb7",
+    backgroundColor: event.scheduleType === "SCHEDULE" ? "#ffc1cc" : "#A0D468",
     allDay: true,
   }));
 
