@@ -16,7 +16,7 @@ const Pagemode = styled.button`
   margin: 10px;
   flex-shrink: 0;
   background: #a54d1f;
-  font-size: 20px;
+  font-size: 1rem;
   font-weight: 400;
   color: #ffffff;
 `;
@@ -26,7 +26,7 @@ const PagemodeSel = styled.button`
   margin: 10px;
   flex-shrink: 0;
   background: #ffe5d3;
-  font-size: 20px;
+  font-size: 1rem;
   font-weight: 400;
   color: #a54d1f;
 `;
@@ -37,7 +37,7 @@ const MyPage = () => {
       <PagemodeSel>
         <Link to="/teampage">팀 활동</Link>
       </PagemodeSel>
-      <AddBtn currentPage="personal"/>
+      <AddBtn currentPage="personal" />
       <Calendar />
       <Notice />
     </WrapperContainer>
