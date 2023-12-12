@@ -8,7 +8,7 @@ const NoticeContainer = styled.div`
 const Board = () => {
     return (
         <NoticeContainer>
-            <h1>Board Screen</h1>
+            {/* <h1>Board Screen</h1> */}
             {/* Add your board content here */}
         </NoticeContainer>
     );

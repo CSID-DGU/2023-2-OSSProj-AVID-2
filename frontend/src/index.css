@@ -16,11 +16,13 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
+
   text-decoration: inherit;
+  /* border-color: transparent; */
 }
+
 a:hover {
-  color: #535bf2;
+  color:#1a1a1a
 }
 
 body {
@@ -66,4 +68,21 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+.fc-daygrid-event {
+  border-color: transparent;
+  pointer-events: none;
+}
+
+/* 일요일 날짜 빨간색 */
+.fc-day-sun a {
+  color: red;
+  text-decoration: none;
+}
+
+/* 토요일 날짜 파란색 */
+.fc-day-sat a {
+  color: blue;
+  text-decoration: none;
 }
