@@ -21,25 +21,32 @@ function TeamCalendar({ selectedTeam }) {
 
   useEffect(() => {
     const fetchTeamEvents = async () => {
-      console.log(selectedTeam)
+      console.log(selectedTeam);
       try {
         if (!selectedTeam || !selectedTeam.teamId) {
           setEvents([]);
           return;
         }
-        const formattedMonth = selectedDate.toISOString().split("T")[0].split("-").slice(0, 2).join("-");
-        const response = await API.get(`/api/schedule/team/${selectedTeam.teamId}/list`,{ params: { month: formattedMonth } });
+        const formattedMonth = selectedDate
+          .toISOString()
+          .split("T")[0]
+          .split("-")
+          .slice(0, 2)
+          .join("-");
+        const response = await API.get(
+          `/api/schedule/team/${selectedTeam.teamId}/list`,
+          { params: { month: formattedMonth } }
+        );
         console.log("Team Events:", response.data);
 
         if (response.data.resultCode === "SUCCESS") {
-          const events = response.data.result.teamSchedule
+          const events = response.data.result.teamSchedule;
           console.log("All Events:", events);
           setEvents(events);
-          
         }
         const currentDate = new Date().toISOString();
         console.log("Current Date:", currentDate);
-        const todoResponse = await API.get("/api/schedule/team/Todolist",{
+        const todoResponse = await API.get("/api/schedule/team/Todolist", {
           params: {
             date: currentDate,
           },
@@ -49,8 +56,6 @@ function TeamCalendar({ selectedTeam }) {
           console.log("Todo List:", todoList);
           setTodoList(todoList);
         }
-
-
       } catch (error) {
         console.error("Error fetching team events:", error);
       }
@@ -79,7 +84,7 @@ function TeamCalendar({ selectedTeam }) {
     allDay: true,
   }));
 
-  eventsForFullCalendar.forEach(event => {
+  eventsForFullCalendar.forEach((event) => {
     const endDate = new Date(event.end);
     endDate.setDate(endDate.getDate() + 1);
     event.end = endDate.toISOString();
@@ -92,7 +97,7 @@ function TeamCalendar({ selectedTeam }) {
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           initialView={"dayGridMonth"}
           headerToolbar={{
-            start: "today prev,next",
+            start: "today prev next",
             center: "title",
             end: "",
           }}
@@ -104,8 +109,9 @@ function TeamCalendar({ selectedTeam }) {
           dateClick={handleDateClick} // Add dateClick handler
         />
       </s.TeamCalendarContainer>
+
       <s.ListContainer>
-      {todoList.map((todo) => (
+        {todoList.map((todo) => (
           <s.ListItemContainer key={todo.id} value={todo.category}>
             <s.Checkbox type="checkbox" />
             <s.AttributeLabel>{todo.activityName}</s.AttributeLabel>

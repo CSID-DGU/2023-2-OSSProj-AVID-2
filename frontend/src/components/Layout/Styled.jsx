@@ -88,14 +88,14 @@ export const LogoutBtnContainer = styled.button`
 export const User = styled.text`
   position: relative;
   color: grey;
-  font-size: 20px;
+  font-size: 1.1rem;
 `;
 
 export const Language = styled.text`
-  margin-left: 150px;
+  margin-left: 10%;
   color: var(--colors-black-100, #000);
   font-family: DM Sans;
-  font-size: 22px;
+  font-size: 1.1rem;
   font-style: bold;
   font-weight: 400;
   opacity: 0.4;
@@ -109,7 +109,7 @@ export const LoginedBtn = styled.button`
 
   font: Noto Sans KR;
   display: block;
-  font-size: 20px;
+  font-size: 1.1rem;
   font-weight: bold;
   text-align: center;
   color: #fff;
@@ -127,7 +127,7 @@ export const LectureBtn = styled.button`
 
   font: Noto Sans KR;
   display: block;
-  font-size: 15px;
+  font-size: 0.8rem;
   font-weight: bold;
   text-align: center;
   color: #8b6666;
