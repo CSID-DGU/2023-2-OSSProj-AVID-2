@@ -292,6 +292,12 @@ const AddTeam = () => {
               >
                 팀 생성
               </s.mbutton>
+              <s.mbutton
+                onClick={() => setAddTeamModalOpen(false)}
+                style={{ width: "30%", height: "40px", marginTop: "2%" }}
+              >
+                취소
+              </s.mbutton>
             </Modal>
 
             <s.sbutton onClick={handleClickAddMember}>팀원 추가</s.sbutton>
@@ -331,6 +337,12 @@ const AddTeam = () => {
                 style={{ width: "30%", height: "40px", marginTop: "20%" }}
               >
                 팀원 초대
+              </s.mbutton>
+              <s.mbutton
+                onClick={() => setAddMemberModalOpen(false)}
+                style={{ width: "30%", height: "40px", marginTop: "2%" }}
+              >
+                취소
               </s.mbutton>
             </Modal>
 
