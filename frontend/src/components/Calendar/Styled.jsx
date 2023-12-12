@@ -289,6 +289,13 @@ export const sbutton = styled.button`
   font-size: 15px;
 `;
 
+export const cbutton = styled.button`
+  width: 100px;
+  height: 50px;
+  font-size: 15px;
+  margin-top: auto;
+`;
+
 export const ClassTeamList = styled.button`
   display: flex;
   align-items: center;
@@ -322,8 +329,6 @@ export const TeamMemberList = styled.div`
   margin-left: 20px;
 `;
 
-export const TeamMemo = styled.div``;
-
 export const SelectClassContainer = styled.div`
   width: 300px;
   height: 150px;
@@ -341,4 +346,11 @@ export const NewTeamLabel = styled.div`
   margin-left: 15px;
   color: rgba(0, 0, 0, 0.5);
   word-wrap: break-word;
+`;
+
+export const mbutton = styled.button`
+  width: 100px;
+  height: 50px;
+  font-size: 15px;
+  background-color: #c3b8b8;
 `;

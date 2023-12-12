@@ -33,7 +33,8 @@ const addMemberModalStyles = {
     border: "none",
     borderRadius: "10px",
     alignItems: "center",
-    justifyContent: "center",
+    display: "flex",
+    flexDirection: "column",
     overflow: "auto",
     padding: "20px",
   },
@@ -58,18 +59,18 @@ const AddTeam = () => {
   const [students, setStudents] = useState([]);
 
   const [selectedMember, setSelectedMember] = useState({});
-  
+
   const getLectureList = async () => {
     try {
       const response = await API.get("/api/user-subjects");
-      if(response.data.resultCode === "SUCCESS"){
+      if (response.data.resultCode === "SUCCESS") {
         setLectureList(response.data.result);
         console.log(response.data.result);
       }
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   useEffect(() => {
     getLectureList();
@@ -78,9 +79,11 @@ const AddTeam = () => {
 
   const fetchStudents = async (selectedTeam) => {
     console.log("Fetching students for subject ID:", selectedTeam);
-    
+
     try {
-      const response = await API.get(`/api/user-subjects/${selectedTeam.subjectId}/students`);
+      const response = await API.get(
+        `/api/user-subjects/${selectedTeam.subjectId}/students`
+      );
       if (response.data.resultCode === "SUCCESS") {
         setStudents(response.data.result);
         console.log("Students:", response.data.result);
@@ -89,7 +92,7 @@ const AddTeam = () => {
       console.error("Error fetching students:", error);
     }
   };
-  
+
   // 모달이 열릴 때 학생 목록 불러오기 (예: handleClickAddMember 함수 내부)
   const handleClickAddMember = () => {
     // 선택한 강좌의 ID를 이용해서 학생 목록을 불러옴
@@ -108,19 +111,19 @@ const AddTeam = () => {
     }
   };
 
-  const createTeam = async () => {  
+  const createTeam = async () => {
     try {
       const response = await API.post("/api/team/create", {
         subjectId: Number(selectedLecture),
       });
       console.log(response);
-      if(response.data.resultCode === "SUCCESS"){
+      if (response.data.resultCode === "SUCCESS") {
         setClassTeamList((prevList) => [...prevList, newTeamName]);
         setAddTeamModalOpen(false);
       }
     } catch (error) {
       console.error(error);
-  
+
       alert("팀 생성에 실패했습니다.");
     }
   };
@@ -128,10 +131,10 @@ const AddTeam = () => {
   const getTeamList = async () => {
     try {
       const response = await API.get("/api/team/list");
-      if(response.data.resultCode === "SUCCESS"){
+      if (response.data.resultCode === "SUCCESS") {
         setTeamList(response.data.result);
         console.log("response" + JSON.stringify(response.data.result));
-        console.log("class"+classTeamList);
+        console.log("class" + classTeamList);
       }
     } catch (error) {
       console.error(error);
@@ -145,22 +148,21 @@ const AddTeam = () => {
     const apiEndpoint = `/api/team/${team.teamId}/userInfo`;
 
     try {
-        // API 호출
-        const response = await API.get(apiEndpoint);
+      // API 호출
+      const response = await API.get(apiEndpoint);
 
-        // API 응답에서 팀 멤버 정보 추출
-        const teamMembersData = response.data;
-        console.log("Team Members:", teamMembersData);
-        // 추출한 정보를 state에 반영
-        setTeamMembers((prevMembers) => ({
-            ...prevMembers,
-            [team.subjectName]: teamMembersData,
-        }));
-
+      // API 응답에서 팀 멤버 정보 추출
+      const teamMembersData = response.data;
+      console.log("Team Members:", teamMembersData);
+      // 추출한 정보를 state에 반영
+      setTeamMembers((prevMembers) => ({
+        ...prevMembers,
+        [team.subjectName]: teamMembersData,
+      }));
     } catch (error) {
-        console.error("Error fetching team members:", error);
+      console.error("Error fetching team members:", error);
     }
-};
+  };
 
   const handleSelectMember = (member) => {
     console.log("Selected Member:", member);
@@ -186,10 +188,13 @@ const AddTeam = () => {
         teamId: selectedTeam.teamId,
         subjectId: selectedTeam.subjectId,
       };
-      console.log(memberRequest)
+      console.log(memberRequest);
       // 서버로 팀원을 추가하는 요청 보내기
       try {
-        const response = await API.post(`/api/team/${selectedTeam.teamId}/addUser`, memberRequest);
+        const response = await API.post(
+          `/api/team/${selectedTeam.teamId}/addUser`,
+          memberRequest
+        );
         console.log(response);
         if (response.data.resultCode === "SUCCESS") {
           // 성공적으로 추가되었을 때의 처리
@@ -206,9 +211,6 @@ const AddTeam = () => {
       }
     }
   };
-
-
-  
 
   return (
     <>
@@ -240,9 +242,13 @@ const AddTeam = () => {
                 <s.TeamMember>
                   팀원:
                   {teamMembers[selectedTeam.subjectName] &&
-                    teamMembers[selectedTeam.subjectName].map((member, index) => (
-                      <s.TeamMemberList key={index}>{member.split(",")[1]}</s.TeamMemberList>
-                    ))}
+                    teamMembers[selectedTeam.subjectName].map(
+                      (member, index) => (
+                        <s.TeamMemberList key={index}>
+                          {member.split(",")[1]}
+                        </s.TeamMemberList>
+                      )
+                    )}
                 </s.TeamMember>
               </>
             )}
@@ -257,12 +263,19 @@ const AddTeam = () => {
               ariaHideApp={false}
             >
               {/* 강의를 선택할 드롭다운 추가 */}
-            <select value={selectedLecture} onChange={(e) => setSelectedLecture(e.target.value)}>
-                <option value="" disabled>Select a lecture</option>
+              <select
+                value={selectedLecture}
+                onChange={(e) => setSelectedLecture(e.target.value)}
+              >
+                <option value="" disabled>
+                  Select a lecture
+                </option>
                 {lectureList.map((lecture, index) => (
-                    <option key={index} value={lecture.id}>{lecture.subjectName}</option>
+                  <option key={index} value={lecture.id}>
+                    {lecture.subjectName}
+                  </option>
                 ))}
-            </select>
+              </select>
 
               {/* <s.NewTeamLabel>
                 New Team Name:
@@ -273,7 +286,12 @@ const AddTeam = () => {
                   onChange={(e) => setNewTeamName(e.target.value)}
                 />
               </s.NewTeamLabel> */}
-              <s.sbutton onClick={createTeam}>Create Team</s.sbutton>
+              <s.mbutton
+                onClick={createTeam}
+                style={{ width: "30%", height: "40px", marginTop: "20%" }}
+              >
+                팀 생성
+              </s.mbutton>
             </Modal>
 
             <s.sbutton onClick={handleClickAddMember}>팀원 추가</s.sbutton>
@@ -283,26 +301,40 @@ const AddTeam = () => {
               onRequestClose={handleAddTeamMembers}
               ariaHideApp={false}
             >
-              New Team Member:
+              새로운 팀원:
               {/* <input
                 type="text"
                 id="newTeamMember"
                 value={newTeamName}
                 onChange={(e) => setNewTeamName(e.target.value)}
               /> */}
-
-              <select value={selectedMember} onChange={(e)=>setSelectedMember(e.target.value)}>
-                <option value="" disabled>Select a student</option>
-                  {students.map((student, index) => (
-                      <option key={index} value={student.userID}>{student.username}</option>
-                  ))}
+              <select
+                value={selectedMember}
+                onChange={(e) => setSelectedMember(e.target.value)}
+                style={{ width: "30%", height: "40px", marginTop: "2%" }}
+              >
+                <option value="" disabled>
+                  Select a student
+                </option>
+                {students.map((student, index) => (
+                  <option
+                    key={index}
+                    value={student.userID}
+                    style={{ width: "30%", height: "30px" }}
+                  >
+                    {student.username}
+                  </option>
+                ))}
               </select>
-              <s.sbutton onClick={() => handleAddTeamMembers()}>
-                Add Team Member
-              </s.sbutton>
+              <s.mbutton
+                onClick={() => handleAddTeamMembers()}
+                style={{ width: "30%", height: "40px", marginTop: "20%" }}
+              >
+                팀원 초대
+              </s.mbutton>
             </Modal>
 
-            <s.sbutton onClick={() => setModalIsOpen(false)}>닫기</s.sbutton>
+            <s.cbutton onClick={() => setModalIsOpen(false)}>닫기</s.cbutton>
           </s.ModalButtonContainer>
         </s.AddTeamContainer>
       </s.AddTeamModal>
