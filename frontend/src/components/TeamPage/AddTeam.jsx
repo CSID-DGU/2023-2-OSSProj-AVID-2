@@ -255,7 +255,7 @@ const AddTeam = () => {
           </s.SelectedClassContainer>
 
           <s.ModalButtonContainer>
-            <s.sbutton onClick={handleClickAddTeam}>팀 생성</s.sbutton>
+            <s.mbutton onClick={handleClickAddTeam}>팀 생성</s.mbutton>
             <Modal
               isOpen={AddTeamModalOpen}
               style={addMemberModalStyles}
@@ -300,7 +300,7 @@ const AddTeam = () => {
               </s.mbutton>
             </Modal>
 
-            <s.sbutton onClick={handleClickAddMember}>팀원 추가</s.sbutton>
+            <s.mbutton onClick={handleClickAddMember}>팀원 추가</s.mbutton>
             <Modal
               isOpen={AddMemberModalOpen}
               style={addMemberModalStyles}

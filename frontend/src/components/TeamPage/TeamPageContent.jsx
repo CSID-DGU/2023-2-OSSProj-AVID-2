@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import TeamCalendar from "../Calendar/TeamCalendar";
 import styled from "styled-components";
@@ -16,9 +16,8 @@ const Pagemode = styled.button`
   margin: 10px;
   flex-shrink: 0;
   background: #a54d1f;
-  font-size: 20px;
+  font-size: 1rem;
   font-weight: 400;
-  font-familiy: DMSans;
   color: #ffffff;
 `;
 const PagemodeSel = styled.button`
@@ -27,9 +26,8 @@ const PagemodeSel = styled.button`
   margin: 10px;
   flex-shrink: 0;
   background: #ffe5d3;
-  font-size: 20px;
+  font-size: 1rem;
   font-weight: 400;
-  font-familiy: DMSans;
   color: #a54d1f;
 `;
 const TodoContainer = styled.div`
@@ -68,9 +66,11 @@ const TeamPage = () => {
 
   const handleDropdownChange = (e) => {
     // 드롭다운에서 선택된 팀의 정보 객체를 가져와서 설정
-    const selectedTeamInfo = teamList.find((team) => team.subjectName === e.target.value);
+    const selectedTeamInfo = teamList.find(
+      (team) => team.subjectName === e.target.value
+    );
     setSelectedTeam(selectedTeamInfo);
-    console.log(selectedTeamInfo)
+    console.log(selectedTeamInfo);
   };
 
   return (
@@ -90,7 +90,7 @@ const TeamPage = () => {
             </option>
           ))}
         </Dropdown>
-        <AddBtn currentPage="team" currentTeam={selectedTeam}/>
+        <AddBtn currentPage="team" currentTeam={selectedTeam} />
       </TodoContainer>
       <TeamCalendar selectedTeam={selectedTeam} />
     </WrapperContainer>

@@ -261,7 +261,7 @@ export const ClassTeamContainer = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  background: #e7dcdc;
+  background: #c3b8b8;
   font-family: "DM Sans";
   font-size: 35px;
   font-weight: 500;
@@ -279,7 +279,6 @@ export const SelectedClassContainer = styled.div`
 export const ModalButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
-
   background: #ffffff;
 `;
 
@@ -292,8 +291,9 @@ export const sbutton = styled.button`
 export const cbutton = styled.button`
   width: 100px;
   height: 50px;
-  font-size: 15px;
+  font-size: 0.9rem;
   margin-top: auto;
+  background-color: #c3b8b8;
 `;
 
 export const ClassTeamList = styled.button`
@@ -351,6 +351,6 @@ export const NewTeamLabel = styled.div`
 export const mbutton = styled.button`
   width: 100px;
   height: 50px;
-  font-size: 15px;
+  font-size: 0.9rem;
   background-color: #c3b8b8;
 `;
